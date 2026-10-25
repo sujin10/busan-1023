@@ -881,7 +881,7 @@ const MAIN_X=-7.1, INTRO_X=3;
  mainPanel=m;
  {const D=WALL.intro.dimAtMain,bc=cv(MAIN_W,MAIN_H),bx=bc.getContext('2d');bx.filter='blur('+D.blur+'px)';bx.drawImage(mainCv,0,0);   /* 인트로에서 볼 때 쓰는 흐린 메인 (인트로와 같은 흐림·진하기) */
   mainBlur=plane(gm,6.4,6.6,tex(bc),0,BLOCK_H/2,0.0045,{transparent:true,opacity:0,depthWrite:false});}
- const s0=addStop({type:'main',sec:'main',focus:{c:V(MAIN_X+(MAIN_BOX?((MAIN_BOX.l+MAIN_BOX.r)/2-MAIN_W/2)/200:0),BLOCK_H/2-(MAIN_BOX?((MAIN_BOX.t+MAIN_BOX.b)/2-MAIN_H/2)/200:0),7.85),n,w:6.6,h:6.4},oblique:T.MathUtils.degToRad(29),obliqueM:T.MathUtils.degToRad(29),fill:.75});m.userData.stop=s0.i;clickables.push(m);
+ const s0=addStop({type:'main',sec:'main',focus:{c:V(MAIN_X+(MAIN_BOX?((MAIN_BOX.l+MAIN_BOX.r)/2-MAIN_W/2)/200:0),BLOCK_H/2-(MAIN_BOX?((MAIN_BOX.t+MAIN_BOX.b)/2-MAIN_H/2)/200:0),7.85),n,w:6.6,h:6.4},oblique:T.MathUtils.degToRad(29),obliqueM:T.MathUtils.degToRad(29),zoomM:1.12,fill:.75});m.userData.stop=s0.i;clickables.push(m);
  const gi=unitGroup(INTRO_X,7.85,n);const introCv=introCanvas();const mi=plane(gi,6.0,6.6,tex(introCv),0,BLOCK_H/2,0.004,{transparent:true});
  {const D=WALL.intro.dimAtMain,bc=cv(introCv.width,introCv.height),bx=bc.getContext('2d');bx.filter='blur('+D.blur+'px)';bx.drawImage(introCv,0,0);   /* 메인에서 볼 때 쓰는 흐린 인트로 */
   introBlur=plane(gi,6.0,6.6,tex(bc),0,BLOCK_H/2,0.0045,{transparent:true,opacity:0,depthWrite:false});}wash(gi,6.8,6.6,0,BLOCK_H/2,.25);   // 메인과 2.3m 띄움 (6×5m)
@@ -982,7 +982,8 @@ function camFor(s){
     const mob=innerWidth<760,f=(mob&&s.focusM)||s.focus,level=s.type==='place'||s.type==='chapter'||s.type==='ending',fill=mob&&s.fill?(s.oblique?0.96:0.98):s.fill||(level?.66:.88);   // 모바일: 화면 폭을 거의 채울 만큼 가까이
     let d=Math.max(f.h/r.h,f.w/r.w)*H/(2*tn*fill);
     if(level){ // 작품 높이에서 정면으로 보되, 화면 아래쪽에 바닥이 살짝 걸릴 만큼 물러섬
-      const wp=s.type==='place'&&!mob,Hw=Math.max(f.h/(wp?0.95:0.86),2*(f.c.y+0.1)*(wp?CLOSE:1));d=Math.max(Hw/r.h,(f.w/(mob?0.97:s.overview?0.92:0.8))/r.w)*H/(2*tn);}if(s.type==='place'&&!mob&&s.p.zoom)d/=s.p.zoom;d=T.MathUtils.clamp(d,1.3,(s.type==='main'||s.type==='intro')?11:s.overview&&!mob?20:9.5*PS);   // 웹 장 개관: 벽 전체가 보이게 더 멀리   // 웹 사진은 CLOSE만큼 더 가까이   // 웹 벽 전체 화면은 사진 줄에 조금 더 꽉 차게 (0.92)
+      const wp=s.type==='place'&&!mob,Hw=Math.max(f.h/(wp?0.95:0.86),2*(f.c.y+0.1)*(wp?CLOSE:1));d=Math.max(Hw/r.h,(f.w/(mob?0.97:s.overview?0.92:0.8))/r.w)*H/(2*tn);}if(s.type==='place'&&!mob&&s.p.zoom)d/=s.p.zoom;if(mob&&s.zoomM)d/=s.zoomM;   // zoomM: 모바일에서만 더 가까이(메인)
+    d=T.MathUtils.clamp(d,1.3,(s.type==='main'||s.type==='intro')?11:s.overview&&!mob?20:9.5*PS);   // 웹 장 개관: 벽 전체가 보이게 더 멀리   // 웹 사진은 CLOSE만큼 더 가까이   // 웹 벽 전체 화면은 사진 줄에 조금 더 꽉 차게 (0.92)
     const ob=s.oblique?(mob?(s.obliqueM??s.oblique*0.55):s.oblique):0,dir=ob?V(-Math.sin(ob),0,Math.cos(ob)):f.n;   // 모바일: 패널 양옆 여백만 살짝 넘칠 만큼 크게, 비스듬한 각도는 조금 줄임   // 메인은 왼쪽 앞에서 비스듬히
     target=f.c.clone();pos=f.c.clone().addScaledVector(dir,d);
     if(s.type==='main'){const v=WALL.main.viewShift||0;target.x+=v;pos.x+=v;}
@@ -1193,7 +1194,7 @@ function introDim(){   // 메인을 볼 때 인트로 벽만 살짝 흐리게 (�
   if(!introPanel||!introBlur)return;const t=stops[cur].type==='main'?1:0;introK+=(t-introK)*0.08;if(Math.abs(t-introK)<0.002)introK=t;
   const D=WALL.intro.dimAtMain;introPanel.material.opacity=1-introK;introBlur.material.opacity=introK*D.opacity;
   if(!mainBlur)return;const u=stops[cur].type==='intro'?1:0;mainK+=(u-mainK)*0.08;if(Math.abs(u-mainK)<0.002)mainK=u;   // 인트로를 볼 때는 메인 벽만 살짝 흐리게
-  mainPanel.material.opacity=1-mainK;mainBlur.material.opacity=mainK*D.opacity;}
+  mainPanel.material.opacity=1-mainK;mainBlur.material.opacity=mainK*D.opacity;mainBlur.visible=mainK>0;introBlur.visible=introK>0;}   // 흐린 판은 쓰일 때만 그림 (안 보이는 판이 겹쳐 그려지면 모바일에서 1023 질감이 깨짐)
 function sideBlur(){
   const s=stops[cur],on=(s.type==='main'||s.type==='intro')&&!tw;
   sbL.classList.remove('on');sbR.classList.remove('on');   /* 화면 블러 대신 옆 벽만 흐리게 (introDim: 메인에서는 인트로, 인트로에서는 메인) */if(!on)return;   // 메인: 인트로가 보이는 오른쪽만 / 인트로: 메인이 보이는 왼쪽만
