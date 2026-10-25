@@ -749,7 +749,7 @@ scene.background=new T.Color('#BDBDBD');
 scene.fog=new T.Fog('#BDBDBD',34,80);
 const fovFor=()=>innerWidth/innerHeight<0.8?64:52;
 let FOV=fovFor();
-const camera=new T.PerspectiveCamera(FOV,innerWidth/innerHeight,0.05,120);
+const camera=new T.PerspectiveCamera(FOV,innerWidth/innerHeight,0.2,120);   // near 0.2: 휴대폰 GPU에서 벽에 붙은 얇은 판들이 깜빡이거나 네모 자국이 생기지 않게 깊이 정밀도 확보 (카메라는 벽에서 최소 1.3m)
 const ANISO=renderer.capabilities.getMaxAnisotropy();
 function tex(src,rep){const t=src instanceof HTMLCanvasElement?new T.CanvasTexture(src):new T.Texture(src);t.needsUpdate=true;t.encoding=T.sRGBEncoding;t.anisotropy=ANISO;
   if(rep){t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}return t;}
@@ -920,13 +920,13 @@ CHAPTERS.forEach((ch,ci)=>{
       tp=F.at(Math.max(F.s0-(0.65+fw0/2)*PS*FS-1.6-hw*PS/2,-wallHalf+viewHalf));}   // 모바일 사진 화면에 걸리지 않게 1.6m 띄우되, 벽 모서리가 화면에 보이지 않을 만큼은 안쪽에
     const [x,z]=tp,g=unitGroup(x,z,n);g.scale.setScalar(PS);g.updateMatrixWorld();
     mobOnly.push(wash(g,hw+1.6,4.2,0,2.2));
-    const hp=plane(g,hw,hh,ht,0,Y,0.006,{transparent:true});mobOnly.push(hp);
+    const hp=plane(g,hw,hh,ht,0,Y,0.006,{transparent:true,depthWrite:false});mobOnly.push(hp);
     // 웹: 사진 칸들의 가운데 위에 (사진 액자 위끝 3.25m보다 위)
     const P=F.ptsD,cx=P.reduce((a,q)=>a+q[0],0)/P.length,cz=P.reduce((a,q)=>a+q[1],0)/P.length,gw=unitGroup(cx,cz,n);gw.updateMatrixWorld();
     const K=WALL.header.web,hcw=webHeaderCanvas(ch),u=PS*K.scale/400,dw=hcw.width*u,dh=hcw.height*u;
     const p0=ch.places[0],a0=p0.img?p0.img.width/p0.img.height:1.5,fw0=(a0>=1?1.7:1.7*a0)+0.275;   // 첫 사진 액자 폭
     const lx=-(P.length-1)/2*F.spD-(0.65+fw0/2)*PS*FS;   // 첫 사진 액자 왼쪽 끝 (사진 줄 가운데 기준)
-    const hd=plane(gw,dw,dh,tex(hcw),lx-hcw.padX*u+dw/2,K.y,0.006,{transparent:true});deskOnly.push(hd);   // 세로 막대 왼쪽 끝을 액자 왼쪽 끝에
+    const hd=plane(gw,dw,dh,tex(hcw),lx-hcw.padX*u+dw/2,K.y,0.006,{transparent:true,depthWrite:false});deskOnly.push(hd);   // 세로 막대 왼쪽 끝을 액자 왼쪽 끝에
     const span=SPAN,top=K.y+dh/2,bot=0.75*PS*FS;   // 벽 전체: 사진이 가장 많은 장의 폭으로 통일(장마다 같은 거리) · 제목 위끝 ~ 설명 글 아래끝
     const cs=addStop({type:'chapter',sec:ch.sec,ch,ci,overview:true,
       focus:{c:localToWorld(gw,0,(top+bot)/2),n,w:span+1,h:top-bot+0.6},
@@ -948,12 +948,12 @@ CHAPTERS.forEach((ch,ci)=>{
     const phM=plane(g,pw,ph,tex(pc),0,cy,0.052);
     // 사진 설명: 카드 없이 벽에 바로 쓴 검정 글자 (액자 오른쪽, 마지막 줄 바닥선 = 액자 아래선)
     const cc=cardCanvas(p),cw=1.2,chh=cw*cc.height/cc.width,cx=fw/2+0.14+cw/2,ccy=cy-fh/2-WALL.card.desc.bottom*cw/cc.width+chh/2;
-    const cardM=new T.Mesh(new T.PlaneGeometry(cw,chh),new T.MeshBasicMaterial({map:tex(cc),transparent:true}));cardM.position.set(cx,ccy,0.03);g.add(cardM);deskOnly.push(cardM);   // 조명 영향 없이 #8C8C8C 그대로
+    const cardM=new T.Mesh(new T.PlaneGeometry(cw,chh),new T.MeshBasicMaterial({map:tex(cc),transparent:true,depthWrite:false}));cardM.position.set(cx,ccy,0.03);g.add(cardM);deskOnly.push(cardM);   // 조명 영향 없이 #8C8C8C 그대로
     // 모바일: 지명만 담은 작은 박스를 사진 밑 가운데에 (이야기 보기는 사진을 눌러서)
     const wM=fw+0.2;
     // 모바일은 화면 폭에 맞춰 사진마다 보는 거리가 달라지므로, 거리에 비례해 박스 크기를 정해 화면 속 글자 크기를 똑같이 맞춤
     const tc=tagCanvas(p),th=0.2,tw=th*tc.width/tc.height,ty=cy-fh/2-0.1-th/2;   /* 실제 크기는 fitTags()가 보는 거리에 맞춰 정함 */
-    const tagM=new T.Mesh(new T.PlaneGeometry(tw,th),new T.MeshBasicMaterial({map:tex(tc),transparent:true}));tagM.position.set(0,ty,0.03);g.add(tagM);mobOnly.push(tagM);
+    const tagM=new T.Mesh(new T.PlaneGeometry(tw,th),new T.MeshBasicMaterial({map:tex(tc),transparent:true,depthWrite:false}));tagM.position.set(0,ty,0.03);g.add(tagM);mobOnly.push(tagM);   // 글자 판은 투명 부분이 뒤의 조명·그림자를 가리지 않게 depthWrite:false (안 그러면 지명 둘레에 희미한 네모가 보임)
     const focus={c:localToWorld(g,0.65,1.68),n,w:(fw+1.45)*PS*FS,h:Math.max(1.85,fh+0.5)*PS*FS};   // 웹: 모든 사진을 같은 높이·같은 거리에서 봄
     g.position.copy(pM);g.updateMatrixWorld();
     const s=addStop({type:'place',sec:ch.sec,ch,ci,p,pi,g,pD,pM,focus,
