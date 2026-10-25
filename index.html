@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%233B5998%27/%3E%3C/svg%3E">
+<title>1023일, 부산이 수도였던 시간</title>
+<style>
+/* 본문·내용: Pretendard / 강조: 부산단디명조 (L·M·B) — 둘 다 전시 문구에 쓰는 글자만 담아 내장 */
+@font-face{font-family:"Pretendard JP";font-weight:400;font-style:normal;font-display:swap;src:url("assets/fonts/pretendard-jp-400.woff") format("woff")}
+@font-face{font-family:"Another Typewriter";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/another-typewriter.ttf") format("truetype")}   /* 장 제목 옆 [E01. Arrive] — Johan Holmdahl, "No rights reserved" */
+@font-face{font-family:"Cafe24 Anemone";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/cafe24-anemone-400.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:100;font-style:normal;font-display:swap;src:local("Pretendard Thin"),local("Pretendard-Thin"),url("assets/fonts/pretendard-100.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:400;font-style:normal;font-display:swap;src:local("Pretendard Regular"),local("Pretendard-Regular"),url("assets/fonts/pretendard-400.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:500;font-style:normal;font-display:swap;src:local("Pretendard Medium"),local("Pretendard-Medium"),url("assets/fonts/pretendard-500.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:600;font-style:normal;font-display:swap;src:local("Pretendard SemiBold"),local("Pretendard-SemiBold"),url("assets/fonts/pretendard-600.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:700;font-style:normal;font-display:swap;src:local("Pretendard Bold"),local("Pretendard-Bold"),url("assets/fonts/pretendard-700.woff") format("woff")}
+@font-face{font-family:"Pretendard";font-weight:800;font-style:normal;font-display:swap;src:local("Pretendard ExtraBold"),local("Pretendard-ExtraBold"),url("assets/fonts/pretendard-800.woff") format("woff")}
+@font-face{font-family:"Busan Dandi Myeongjo";font-weight:300;font-style:normal;font-display:swap;src:url("assets/fonts/busan-dandi-300.woff") format("woff")}
+@font-face{font-family:"Busan Dandi Myeongjo";font-weight:500;font-style:normal;font-display:swap;src:url("assets/fonts/busan-dandi-500.woff") format("woff")}
+@font-face{font-family:"Busan Dandi Myeongjo";font-weight:700;font-style:normal;font-display:swap;src:url("assets/fonts/busan-dandi-700.woff") format("woff")}
+</style>
+<style>
+/* ═══════════ 화면 위 글자·버튼 (CSS) — 자주 고치는 곳 ═══════════
+   · 왼쪽 위 로고 ............ #brand .b1 (ONLINE EXHIBITION) / #brand .b2 (避亂首都 釜山)
+   · 오른쪽 위 버튼 .......... .top button (버튼 크기) / #bgmBtn svg (볼륨 아이콘) / #menuBtn span (햄버거 선)
+   · 모바일 아래 바 .......... #mnav / #mnav button (PREV·NEXT) / #pCount (가운데 번호)
+   · 모바일 위·아래 바 색 .... "모바일 위쪽 바" 주석 아래 @media 블록
+   · 햄버거 메뉴 ............. .menu-panel / .mgo (챕터 제목) / .msub button (장소 이름)
+   · 이야기 창 ............... .sheet-panel / .s-title h2 / .sheet-body
+   · 엔딩 화면 ............... #endScreen h2 / #endScreen .end-p
+   · 벽에 붙은 글자는 CSS가 아니라 스크립트의 const WALL 에서 고칩니다
+   ═══════════════════════════════════════════════════════════════ */
+/* Layout: 전체화면 3D 전시실 + 하단(모바일)/좌측(데스크톱) 캡션 카드 + 우측 상세 시트. 색·글꼴은 Desktop.pdf 시안 기준, 단일 테마. */
+:root{
+  --wall:#FDFDFD;      /* 벽면 */
+  --ink:#1A1A1A;       /* 내용 */
+  --accent:#3B5998;    /* 강조 */
+  --gray:#6E6E6E;      /* 보조 (흰 바탕 대비 약 5:1) */
+  --line:#D9D9D9;
+  --card:#6E6E6E;      /* 캡션 카드 */
+  --side:#B9B9B9;      /* 전시실 바깥 */
+  --menu:#474747;      /* 메뉴 패널 */
+  --hi:#8FB0F5;        /* 메뉴 현재 위치 (강조색의 밝은 단계) */
+  --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --serif:"Busan Dandi Myeongjo","Noto Serif KR","Nanum Myeongjo","AppleMyungjo",serif;
+  --num:"Pretendard",system-ui,sans-serif;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden}
+body{background:var(--side);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+#gl.hover{cursor:pointer}
+.sideblur{position:fixed;top:0;bottom:0;z-index:5;pointer-events:none;-webkit-backdrop-filter:blur(6.3px);backdrop-filter:blur(6.3px);opacity:0;transition:opacity .6s}
+.sideblur.on{opacity:1}
+#sideBlurL{left:0;width:0;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 90px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 90px),transparent)}
+#sideBlurR{left:100%;right:0;-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 90px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 90px),transparent)}
+#fade{position:fixed;inset:0;z-index:9;background:#FDFDFD;opacity:0;pointer-events:none}
+
+/* 상단 고정 버튼 (시안: 왼쪽 재생 원형 / 오른쪽 햄버거) */
+.top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) 18px 0 22px;pointer-events:none}
+.top button{pointer-events:auto;width: 30px;height: 33px;display:grid;place-items:center}
+#bgmBtn{width:34px;display:flex;align-items:center;justify-content:flex-start}#bgmBtn svg{height: 27px;width:auto;display:block;color:var(--ink);overflow:visible}#bgmBtn .ico-off,#bgmBtn[aria-pressed="false"] .ico-on{display:none}#bgmBtn[aria-pressed="false"] .ico-off{display:block}
+.top-r{display:flex;align-items:center;gap: 16px;}
+#brand{pointer-events:none;display:flex;flex-direction:column;gap:6px;color:var(--ink);transition:opacity .5s}
+#brand.off{opacity:0}
+#brand .b1{font:400 14px/1 var(--sans);letter-spacing:.06em}
+#brand .b2{font:400 15px/1 "Pretendard JP",var(--sans);letter-spacing:.08em}
+@media (max-width:759px){#brand .b1{font-size:12px}#brand .b2{font-size: 14px;}}
+/* 배경음악 안내 팝업 */
+#menuBtn{justify-items:end}
+#menuBtn span{display:block;width: 28px;height: 2px;border-radius: 2px;background:var(--ink);margin: 2px 0;}
+
+/* 메인: 왼쪽 아래 SCROLL 표시 (데스크톱) */
+#hero{position:fixed;left:34px;bottom:30px;z-index:10;pointer-events:none;transition:opacity .5s}
+#hero.off{opacity:0}
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--ink);font-family:var(--num);font-weight:600;font-size:11px;letter-spacing:.3em}
+.scrollcue i{display:block;width:1px;height:46px;background:linear-gradient(var(--ink),transparent);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;left:-2px;top:0;width:5px;height:5px;border-radius:50%;background:var(--accent);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{top:-6px}70%,100%{top:46px}}
+.eyebrow{display:flex;gap:10px;align-items:center;font-size:12px;font-weight:500;color:var(--gray);font-variant-numeric:tabular-nums}
+.eyebrow b{font-family:var(--num);font-weight:600;color:var(--accent);font-size:15px}
+.eyebrow i{width:1px;height:12px;background:var(--line)}
+
+/* 모바일 하단 내비게이션: ←  01 / 03  → (배경 없이, 벽 글자와 같은 진한 색 · 넘기기는 주로 스와이프) */
+#mnav{position:fixed;left:0;right:0;bottom:0;z-index:15;display:none;align-items:center;justify-content:space-between;
+  padding:0 8px env(safe-area-inset-bottom,0px);height:calc(58px + env(safe-area-inset-bottom,0px));color:var(--ink)}
+#mnav button{height:48px;padding:0 20px;display:flex;align-items:center;font-size:0}   /* 글자(PREV/NEXT)는 숨기고 화살표만 — 누르는 영역은 48px 유지, 이름은 aria-label */
+#mnav button svg{width:28px;height:12px}
+#mnav button:disabled{opacity:.25;cursor:default}
+#mnav button:not(:disabled):active{opacity:.5}
+#pCount{font:500 14px/1 var(--sans);letter-spacing:.06em;color:rgba(26,26,26,.6);text-align:center;min-width:6em}
+#pCount b{color:inherit;font-weight:inherit}   /* 번호도 나머지와 같은 회색·굵기 */
+@media (max-width:759px){#mnav{display:flex;align-items: center;}#hero{display:none}.menu-panel{width:100%;padding-top:calc(env(safe-area-inset-top,0px) + 4px)}.mlist{margin-top:0}}   /* 모바일 메뉴: 위쪽 여백 줄임 */
+/* 모바일 위쪽 바: 배경 없이, 로고·아이콘은 진한 색(데스크톱과 같음) */
+@media (min-width:760px){.top{padding:24px 26px 0 34px}}
+
+#hint{position:fixed;z-index:12;left:50%;top:calc(env(safe-area-inset-top,0px) + 78px);transform:translateX(-50%);background:rgba(26,26,26,.82);color:var(--wall);
+  font-size:13px;padding:8px 14px;width:max-content;max-width:calc(100vw - 32px);text-align:center;transition:opacity .6s;pointer-events:none;border-radius:3px}
+#hint.off{opacity:0}
+
+/* 메뉴 */
+#menu,#sheet{position:fixed;inset:0;display:flex;justify-content:flex-end}
+#menu{z-index:40}#sheet{z-index:45;align-items:flex-end}
+.scrim{position:absolute;inset:0;background:rgba(26,26,26,.4);opacity:0;transition:opacity .35s}
+#menu.open .scrim,#sheet.open .scrim{opacity:1}
+.menu-panel{font-family:var(--sans);position:relative;width:min(380px,100%);height:100%;background:var(--menu);color:var(--wall);overflow-y:auto;overscroll-behavior:contain;
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 34px calc(env(safe-area-inset-bottom,0px) + 34px);
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+#menu.open .menu-panel{transform:none}
+.menu-head{display:flex;justify-content:flex-end;margin-right:-14px}
+.menu-panel .x{width:48px;height:48px}
+.menu-panel .x svg{width:28px;height:28px}
+.mlist{list-style:none;margin:28px 0 0;padding:0}
+.mlist>li{border-bottom:1px solid rgba(253,253,253,.32)}
+.mlist>li:last-child{border-bottom:0}
+.mrow{display:flex;align-items:center;gap: 8px;}
+.mgo{flex:1;text-align:left;display:flex;align-items:center;gap: 12px;padding: 12px 0;font-family:var(--sans);font-weight:700;font-size:18px;min-width:0}
+.mgo .no{font-family:var(--num);font-weight:600;font-variant-numeric:tabular-nums;width:24px;flex:none}
+.mgo .sep{width:2px;height:16px;background:currentColor;flex:none}
+.mtog{width:40px;height:44px;display:grid;place-items:center;margin-right:-10px;flex:none}
+.mtog svg{width:16px;height:16px;transition:transform .3s}
+.mtog[aria-expanded="false"] svg{transform:rotate(-90deg)}
+.mtog.arrow svg{transform:rotate(-90deg)}
+.msub{list-style:none;margin: -4px 0 0;padding: 0px 0 14px 50px;}
+.msub[hidden]{display:none}
+.msub button{display:block;text-align:left;font-size:14px;line-height:1.5;padding:4px 0;color:rgba(253,253,253,.72)}
+.msub button:hover,.mgo:hover{color:var(--wall)}
+.msub button:hover{text-decoration:underline;text-underline-offset:3px}
+.mlist .on{color:var(--hi)!important;font-weight:700}
+.mgo.on .sep{background:var(--hi)}
+.credits{margin-top:30px;font-size:11.5px;color:rgba(253,253,253,.55);line-height:1.7}
+.credits p{margin:0 0 4px}
+
+/* 상세 시트 (시안의 펼친 캡션 카드) */
+.sheet-panel{position:relative;width:100%;max-height:92%;background:var(--wall);overflow-y:auto;overscroll-behavior:contain;
+  padding:0 0 calc(env(safe-area-inset-bottom,0px) + 28px);transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+#sheet.open .sheet-panel{transform:none}
+@media (min-width:760px){
+  #sheet{align-items:stretch}
+  .sheet-panel{width:480px;max-height:none;height:100%;transform:translateX(100%)}
+}
+.sheet-bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:10px 12px 10px 20px;background:var(--card);color:var(--wall)}
+.sheet-bar .x{width:40px;height:40px;display:grid;place-items:center;color:var(--wall);margin-right:-4px;cursor:pointer}.sheet-bar .x svg{width:22px;height:22px}.sheet-bar .x:hover{opacity:.75}
+.sheet-bar .eyebrow{color:rgba(253,253,253,.8)}.sheet-bar .eyebrow b{color:var(--wall)}.sheet-bar .eyebrow i{background:rgba(253,253,253,.4)}
+.sheet-body{padding:26px 20px 32px;display:flex;flex-direction:column;gap:22px}
+.sheet-body figure{margin:0}
+.fr{background:var(--ink);padding:10px;box-shadow:5px 5px 4px rgba(26,26,26,.3)}
+.fr div{background:var(--wall);padding:5px}
+.fr img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.sheet-body figcaption{font-size:12px;color:var(--gray);margin-top:10px}
+.s-title h2{font-family:var(--serif);font-weight:700;-webkit-text-stroke:.4px currentColor;font-size:26px;line-height:1.3;margin:0;color:var(--accent);letter-spacing:-.015em;text-wrap:balance}
+.s-title p{margin:4px 0 0;font-size:13px;color:var(--gray)}
+.block .lab{font-family:var(--num);font-size:12px;font-weight:600;letter-spacing:.12em;margin:0 0 6px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.block .lab::before{content:"";width:16px;height:2px;background:currentColor}
+.block p{margin:0;font-size:15.5px;line-height:1.85;max-width:60ch}
+.nw{white-space:nowrap}
+/* 웹: 이야기 창 왼쪽에 사진을 크게 (벽의 액자와 같은 검은 테·흰 여백). 모바일은 이야기 창만 */
+.sheet-photo{display:none}
+@media (min-width:760px){
+  .sheet-photo{position:absolute;top:0;bottom:0;left:0;right:480px;margin:0;display:flex;align-items:center;justify-content:center;padding:56px 64px;pointer-events:none;
+    opacity:0;transform:scale(.97);transition:opacity .45s,transform .45s cubic-bezier(.2,.7,.2,1)}
+  #sheet.open .sheet-photo{opacity:1;transform:none}
+  .sheet-photo .fr{padding:12px;display:flex;box-shadow:0 18px 40px rgba(26,26,26,.35)}   /* 벽의 액자와 같은 비율: 검은 테는 좁게 */
+  .sheet-photo .fr div{padding:34px;display:flex}   /* 흰 여백은 넓게 */
+  .sheet-photo img{width:auto;height:auto;aspect-ratio:auto;object-fit:contain;max-width:calc(100vw - 480px - 128px - 92px);max-height:calc(100vh - 112px - 92px)}
+}
+.info{display:grid;grid-template-columns:64px 1fr;gap:8px 12px;margin:0;font-size:13.5px;border-top:1px solid var(--line);padding-top:16px}
+.info dt{color:var(--gray)}
+.info dd{margin:0;min-width:0}
+.info a{color:var(--accent);font-weight:500;text-underline-offset:3px}
+.sheet-nav{display:flex;gap:8px}
+.sheet-nav button{flex:1;border:1px solid var(--ink);padding:11px 8px;font-size:13.5px;font-weight:500}
+.sheet-nav button:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:var(--wall)}
+.sheet-nav button:disabled{opacity:.35;cursor:default}
+
+/* 로더 */
+#loader{position:fixed;inset:0;z-index:60;background:var(--wall);   /* 엔딩과 같은 흰 바탕 + 돌 질감(아래 #endScreen::before와 함께 씀) */display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity 1.2s}
+#loader.off{opacity:0;pointer-events:none}
+#loader .ttl{font-family:var(--serif);font-weight:700;line-height:1.45;-webkit-text-stroke:.4px currentColor;font-size:clamp(20px,5vw,26px);color:var(--accent);text-align:center;padding:0 24px}
+/* 로딩: 발자국(웹페이지/footprint.svg)이 0.5초마다 하나씩 찍히고, 찍힌 발자국은 서서히 사라짐 → 다음 바퀴에 같은 자리가 찍힐 땐 이미 비어 있음 */
+#loader .steps{display:block;width:230px;height:auto;margin:14px 0 2px;overflow:visible}
+#loader .steps .fp{fill:var(--accent);opacity:0;animation:step 4.4s linear infinite}
+#loader .steps .fp:nth-child(2){animation-delay:.5s}#loader .steps .fp:nth-child(3){animation-delay:1s}#loader .steps .fp:nth-child(4){animation-delay:1.5s}
+#loader .steps .fp:nth-child(5){animation-delay:2s}#loader .steps .fp:nth-child(6){animation-delay:2.5s}#loader .steps .fp:nth-child(7){animation-delay:3s}#loader .steps .fp:nth-child(8){animation-delay:3.5s}
+@keyframes step{0%{opacity:0}1%{opacity:.9}13%{opacity:.9}43%,100%{opacity:0}}   /* 찍힘 → 약 0.55초 유지 → 약 1.3초에 걸쳐 사라짐 (발자국 8개, 한 바퀴 4.4초) */
+@media (prefers-reduced-motion:reduce){#loader .steps .fp{opacity:.85}}   /* 움직임 줄이기: 발자국을 멈춘 채로 모두 보여줌 */
+#loader .msg{font-size:13px;color:var(--gray);min-height:1.6em;text-align:center;padding:0 24px;margin-top:18px}
+#loader .msg.err{color:var(--ink);font-size:14px;max-width:34em;line-height:1.7}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01s !important;animation:none !important}}
+/* 엔딩: 전시실을 나서며 바뀐 흰 화면 위에 바로 띄움 */
+#endScreen{position:fixed;inset:0;z-index:10;background:var(--wall);   /* 흰 바탕 — 돌 질감은 아래 ::before에서 */
+  display:flex;align-items:center;justify-content:center;padding:92px 24px 88px;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .45s,visibility 0s .45s}
+/* 엔딩 돌 질감: 바닥 돌 사진을 밝게 날려 바탕은 흰색 그대로, 어두운 알갱이·얼룩만 남김 (contrast·opacity를 올리면 질감이 진해짐) */
+#endScreen::before,#loader::before{content:"";position:absolute;inset:0;background:url(assets/floor-stone.jpg) center/900px auto;filter:grayscale(1) contrast(1.6) brightness(1.3);opacity:.6;mix-blend-mode:multiply;pointer-events:none}
+#endScreen .end-in,#loader>*{position:relative}
+#endScreen.on{opacity:1;visibility:visible;transition:opacity 1.1s var(--d,0s),visibility 0s var(--d,0s)}
+#endScreen .end-in{width:min(520px,100%);text-align:left}   /* 메인 벽처럼 왼쪽 정렬: 연도 → 제목 → 글 → 화살표 링크 */
+#endScreen .end-yrs{font-family:var(--sans);font-weight:400;font-size:15px;color:var(--gray);margin:0 0 12px;letter-spacing:.01em}
+#endScreen h2{font-family:var(--serif);font-weight:700;-webkit-text-stroke:.4px currentColor;font-size:clamp(28px,3.4vw,42px);line-height:1.3;color:var(--accent);margin:0 0 26px;letter-spacing:-.01em;text-wrap:balance}
+#endScreen .end-p{font-family:var(--sans);font-weight:400;font-size:clamp(15px,1.45vw,18px);line-height:1.85;color:var(--ink);margin:0 0 14px;white-space:pre-line}
+/* '처음으로 돌아가기': 메인의 '기억을 따라가기'와 같은 형태 (바탕체 + 가는 화살표) */
+#endScreen .end-cta{display:inline-flex;align-items:baseline;gap:14px;margin-top:44px;padding:8px 0;font:700 clamp(18px,1.6vw,21px)/1.2 var(--serif);color:var(--accent);pointer-events:auto}
+#endScreen .end-cta svg{width:56px;height:8px;overflow:visible;transform:translate(var(--hx,0px),var(--ay,-.3em));transition:transform .35s cubic-bezier(.2,.7,.2,1)}   /* --ay: 글자 잉크 가운데에 맞춘 세로 위치(스크립트가 계산) */
+#endScreen .end-cta:hover svg{--hx:6px}
+#endScreen .end-cta .ln{stroke-dasharray:1;stroke-dashoffset:1}
+#endScreen .end-cta .hd{opacity:0}
+#endScreen.on .end-cta .ln{transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1) calc(var(--d,0s) + .9s);stroke-dashoffset:0}
+#endScreen.on .end-cta .hd{transition:opacity .2s calc(var(--d,0s) + 1.55s);opacity:1}
+@media (max-width:760px){
+  #endScreen{align-items:center;padding:72px 28px 84px}
+  #endScreen h2{margin-bottom:18px}
+  #endScreen .end-p{font-size:14.5px;line-height:1.75;margin-bottom:8px}
+  #endScreen .end-cta{margin-top:30px}
+}
+</style>
+</head>
+<body>
+
+<div id="fade" aria-hidden="true"></div>
+<section id="endScreen" aria-labelledby="endTitle" aria-hidden="true"><div class="end-in" id="endIn"></div></section>
+<div id="sideBlurL" class="sideblur" aria-hidden="true"></div><div id="sideBlurR" class="sideblur" aria-hidden="true"></div>
+<canvas id="gl" tabindex="0" aria-label="3D 전시실. 스크롤하거나 화살표 키로 다음 전시물로 이동합니다."></canvas>
+
+<header class="top">
+  <div id="brand" aria-label="Online Exhibition, 피란수도 부산"><span class="b1">ONLINE EXHIBITION</span><span class="b2" lang="zh-Hant">避亂首都 釜山</span></div>
+  <div class="top-r">
+    <button id="bgmBtn" aria-label="배경음악 끄기" aria-pressed="true">
+      <svg class="ico-on" viewBox="0 0 50 37" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round" aria-hidden="true"><path d="M0 21.4463V15.4463C0 12.1326 2.68629 9.44629 6 9.44629H12C12.5523 9.44629 13 9.894 13 10.4463C13 10.9986 12.5523 11.4463 12 11.4463H6C3.79086 11.4463 2 13.2372 2 15.4463V21.4463C2 23.6554 3.79086 25.4463 6 25.4463H12C12.5523 25.4463 13 25.894 13 26.4463C13 26.9986 12.5523 27.4463 12 27.4463H6C2.68629 27.4463 0 24.76 0 21.4463Z"/><path d="M11.2647 11.0909C10.8907 10.6846 10.9162 10.0519 11.3223 9.67778L20.9678 0.798873C22.8905 -0.971077 26 0.392574 26.0001 3.0059L26.0001 33.8868C26.0001 36.5001 22.8905 37.8638 20.9678 36.0938L11.3223 27.2149C10.9162 26.8408 10.8907 26.2081 11.2647 25.8018C11.6388 25.3956 12.2715 25.3692 12.6778 25.7432L22.3223 34.6221C22.9632 35.2121 24.0001 34.7579 24.0001 33.8868L24.0001 3.0059C24 2.1348 22.9632 1.68056 22.3223 2.27055L12.6778 11.1495C12.2715 11.5235 11.6388 11.497 11.2647 11.0909Z"/><path d="M30.9789 23.738C33.7285 20.9882 33.7287 16.5302 30.9789 13.7805C30.5884 13.39 30.5884 12.7568 30.9789 12.3663C31.3695 11.9758 32.0026 11.9758 32.3931 12.3663C35.9239 15.8971 35.9238 21.6214 32.3931 25.1522C32.0026 25.5427 31.3695 25.5427 30.9789 25.1522C30.5886 24.7617 30.5885 24.1285 30.9789 23.738Z"/><path d="M37.3345 6.42488C44.1467 13.237 44.1465 24.2813 37.3345 31.0935C36.944 31.484 36.3109 31.484 35.9203 31.0935C35.5301 30.703 35.5299 30.0697 35.9203 29.6793C41.9512 23.6481 41.9514 13.8702 35.9203 7.83909C35.5298 7.44857 35.5298 6.8154 35.9203 6.42488C36.3109 6.03436 36.944 6.03436 37.3345 6.42488Z"/></svg><svg class="ico-off" viewBox="0 0 45 37" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round" aria-hidden="true"><path d="M0 21.4463V15.4463C0 12.1326 2.68629 9.44629 6 9.44629H12C12.5523 9.44629 13 9.894 13 10.4463C13 10.9986 12.5523 11.4463 12 11.4463H6C3.79086 11.4463 2 13.2372 2 15.4463V21.4463C2 23.6554 3.79086 25.4463 6 25.4463H12C12.5523 25.4463 13 25.894 13 26.4463C13 26.9986 12.5523 27.4463 12 27.4463H6C2.68629 27.4463 0 24.76 0 21.4463Z"/><path d="M11.2647 11.0909C10.8907 10.6846 10.9162 10.0519 11.3223 9.67778L20.9678 0.798873C22.8905 -0.971077 26 0.392574 26.0001 3.0059L26.0001 33.8868C26.0001 36.5001 22.8905 37.8638 20.9678 36.0938L11.3223 27.2149C10.9162 26.8408 10.8907 26.2081 11.2647 25.8018C11.6388 25.3956 12.2715 25.3692 12.6778 25.7432L22.3223 34.6221C22.9632 35.2121 24.0001 34.7579 24.0001 33.8868L24.0001 3.0059C24 2.1348 22.9632 1.68056 22.3223 2.27055L12.6778 11.1495C12.2715 11.5235 11.6388 11.497 11.2647 11.0909Z"/><path d="M42.0919 12.2243C42.4824 11.8338 43.1155 11.8338 43.5061 12.2243C43.8966 12.6148 43.8966 13.248 43.5061 13.6385L32.1924 24.9522C31.8018 25.3427 31.1687 25.3427 30.7782 24.9522C30.3876 24.5617 30.3876 23.9285 30.7782 23.538L42.0919 12.2243Z"/><path d="M42.0208 24.8812C42.4113 25.2717 43.0445 25.2717 43.435 24.8812C43.8256 24.4906 43.8256 23.8575 43.435 23.467L32.1213 12.1532C31.7308 11.7627 31.0976 11.7627 30.7071 12.1532C30.3166 12.5438 30.3166 13.1769 30.7071 13.5675L42.0208 24.8812Z"/></svg>
+    </button>
+    <button id="menuBtn" aria-label="전시 목차 열기" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div id="hero" aria-hidden="true"><div class="scrollcue">SCROLL<i></i></div></div>
+
+<nav id="mnav" aria-label="작품 이동">
+  <button id="prevBtn" aria-label="이전 작품"><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M18 5H1.5M5.5 1 1 5l4.5 4"/></svg>PREV</button>
+  <span id="pCount" aria-live="polite">1023</span>
+  <button id="nextBtn" aria-label="다음 작품">NEXT<svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5h16.5M12.5 1 17 5l-4.5 4"/></svg></button>
+</nav>
+
+<div id="hint" class="off">드래그로 둘러보고, 스크롤·스와이프로 다음 작품으로 이동하세요</div>
+
+<div id="menu" hidden>
+  <div class="scrim" data-close></div>
+  <nav class="menu-panel" aria-label="전시 목차">
+    <div class="menu-head"><button class="x" data-close aria-label="목차 닫기"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l20 20M24 4 4 24"/></svg></button></div>
+    <ul class="mlist" id="mlist"></ul>
+    <div class="credits">
+      <p>부산 지역문화 온·오프라인 사진 전시 · ㈜문화콩 프로젝트팀</p>
+    </div>
+  </nav>
+</div>
+
+<div id="sheet" hidden>
+  <div class="scrim" data-close></div>
+  <figure class="sheet-photo" id="sPhoto" aria-hidden="true"></figure>
+  <article class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sTitle">
+    <div class="sheet-bar"><div class="eyebrow" id="sEyebrow"></div>
+      <button class="x" data-close aria-label="이야기 닫기"><svg viewBox="0 0 20 20" stroke="currentColor" stroke-width="1.5"><path d="M4 4l12 12M16 4 4 16"/></svg></button></div>
+    <div class="sheet-body" id="sBody"></div>
+  </article>
+</div>
+
+<div id="loader" role="status"><script>window.__loaderT0=performance.now();window.DEV=new URLSearchParams(location.search).has('dev');if(DEV)document.currentScript.parentElement.style.display='none';</script>
+  <div class="ttl">1023일,<br>부산이 수도였던 시간</div><svg class="steps" viewBox="0 0 555 64" aria-hidden="true"><defs><filter id="fpRough" x="0" y="0" width="555" height="64" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="0.25 0.25" numOctaves="3" seed="878"/><feDisplacementMap in="SourceGraphic" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter></defs><g filter="url(#fpRough)"><g class="fp"><path d="M21.4689 27.4274C21.897 27.2904 22.1624 26.8709 22.1024 26.4258L20.0649 12.2832C20.005 11.8381 19.6283 11.5042 19.1746 11.4956C17.9675 11.4699 15.3993 11.5042 11.8636 12.0178C5.74262 12.8996 3.38838 16.5979 4.13317 21.7943C4.87797 26.9908 8.18246 29.8758 14.3035 28.994C17.8391 28.4889 20.3132 27.7955 21.4689 27.4359L21.4689 27.4274Z"/><path d="M22.3507 11.7697L24.3625 25.7839C24.431 26.2804 24.8933 26.6314 25.3898 26.5629C40.7223 24.5169 42.503 28.4977 52.4679 26.5287C59.4963 25.1418 63.8624 19.894 62.9892 13.8329C61.9875 6.86436 51.8943 1.12858 36.0139 5.55455C31.4509 6.82156 27.1876 8.65358 22.8387 10.828C22.4877 11.0078 22.2822 11.3845 22.3422 11.7783L22.3507 11.7697Z"/></g><g class="fp"><path d="M87.6089 51.6546L89.6464 37.512C89.7063 37.0668 89.4409 36.6474 89.0129 36.5104C87.8572 36.1508 85.3831 35.4574 81.8474 34.9523C75.7264 34.0705 72.4219 36.9641 71.6771 42.152C70.9323 47.3484 73.2866 51.0467 79.4076 51.9285C82.9432 52.4336 85.5115 52.4678 86.7186 52.4507C87.1637 52.4422 87.5404 52.1083 87.6089 51.6631L87.6089 51.6546Z"/><path d="M130.55 50.1138C131.423 44.0441 127.057 38.8048 120.029 37.418C110.055 35.449 108.283 39.4298 92.9509 37.3837C92.4543 37.3153 91.9921 37.6663 91.9236 38.1628L89.9118 52.1769C89.8518 52.5707 90.0573 52.9474 90.4083 53.1272C94.7572 55.3016 99.012 57.1337 103.583 58.4007C119.472 62.8181 129.557 57.0823 130.559 50.1223L130.55 50.1138Z"/></g><g class="fp"><path d="M161.56 27.4274C161.988 27.2904 162.253 26.8709 162.193 26.4258L160.156 12.2832C160.096 11.8381 159.719 11.5042 159.266 11.4956C158.059 11.4699 155.49 11.5042 151.955 12.0178C145.834 12.8996 143.479 16.5979 144.224 21.7943C144.969 26.9908 148.274 29.8758 154.395 28.994C157.93 28.4889 160.404 27.7955 161.56 27.4359L161.56 27.4274Z"/><path d="M162.442 11.7697L164.454 25.7839C164.522 26.2804 164.984 26.6314 165.481 26.5629C180.813 24.5169 182.594 28.4977 192.559 26.5287C199.587 25.1418 203.953 19.894 203.08 13.8329C202.079 6.86436 191.985 1.12858 176.105 5.55455C171.542 6.82156 167.279 8.65358 162.93 10.828C162.579 11.0078 162.373 11.3845 162.433 11.7783L162.442 11.7697Z"/></g><g class="fp"><path d="M227.7 51.6546L229.737 37.512C229.797 37.0668 229.532 36.6474 229.104 36.5104C227.948 36.1508 225.474 35.4574 221.938 34.9523C215.817 34.0705 212.513 36.9641 211.768 42.152C211.023 47.3484 213.378 51.0467 219.499 51.9285C223.034 52.4336 225.603 52.4678 226.81 52.4507C227.255 52.4422 227.631 52.1083 227.7 51.6631L227.7 51.6546Z"/><path d="M270.641 50.1138C271.514 44.0441 267.148 38.8048 260.12 37.418C250.147 35.449 248.374 39.4298 233.042 37.3837C232.545 37.3153 232.083 37.6663 232.015 38.1628L230.003 52.1769C229.943 52.5707 230.148 52.9474 230.499 53.1272C234.848 55.3016 239.103 57.1337 243.675 58.4007C259.564 62.8181 269.648 57.0823 270.65 50.1223L270.641 50.1138Z"/></g><g class="fp"><path d="M301.651 27.4274C302.079 27.2904 302.344 26.8709 302.285 26.4258L300.247 12.2832C300.187 11.8381 299.81 11.5042 299.357 11.4956C298.15 11.4699 295.581 11.5042 292.046 12.0178C285.925 12.8996 283.571 16.5979 284.315 21.7943C285.06 26.9908 288.365 29.8758 294.486 28.994C298.021 28.4889 300.495 27.7955 301.651 27.4359L301.651 27.4274Z"/><path d="M302.533 11.7697L304.545 25.7839C304.613 26.2804 305.075 26.6314 305.572 26.5629C320.904 24.5169 322.685 28.4977 332.65 26.5287C339.678 25.1418 344.045 19.894 343.171 13.8329C342.17 6.86436 332.076 1.12858 316.196 5.55455C311.633 6.82156 307.37 8.65358 303.021 10.828C302.67 11.0078 302.464 11.3845 302.524 11.7783L302.533 11.7697Z"/></g><g class="fp"><path d="M367.791 51.6546L369.829 37.512C369.888 37.0668 369.623 36.6474 369.195 36.5104C368.039 36.1508 365.565 35.4574 362.03 34.9523C355.909 34.0705 352.604 36.9641 351.859 42.152C351.114 47.3484 353.469 51.0467 359.59 51.9285C363.125 52.4336 365.694 52.4678 366.901 52.4507C367.346 52.4422 367.723 52.1083 367.791 51.6631L367.791 51.6546Z"/><path d="M410.732 50.1138C411.606 44.0441 407.239 38.8048 400.211 37.418C390.238 35.449 388.466 39.4298 373.133 37.3837C372.636 37.3153 372.174 37.6663 372.106 38.1628L370.094 52.1769C370.034 52.5707 370.239 52.9474 370.59 53.1272C374.939 55.3016 379.194 57.1337 383.766 58.4007C399.655 62.8181 409.739 57.0823 410.741 50.1223L410.732 50.1138Z"/></g><g class="fp" transform="translate(420 0)"><path d="M21.4689 27.4274C21.897 27.2904 22.1624 26.8709 22.1024 26.4258L20.0649 12.2832C20.005 11.8381 19.6283 11.5042 19.1746 11.4956C17.9675 11.4699 15.3993 11.5042 11.8636 12.0178C5.74262 12.8996 3.38838 16.5979 4.13317 21.7943C4.87797 26.9908 8.18246 29.8758 14.3035 28.994C17.8391 28.4889 20.3132 27.7955 21.4689 27.4359L21.4689 27.4274Z"/><path d="M22.3507 11.7697L24.3625 25.7839C24.431 26.2804 24.8933 26.6314 25.3898 26.5629C40.7223 24.5169 42.503 28.4977 52.4679 26.5287C59.4963 25.1418 63.8624 19.894 62.9892 13.8329C61.9875 6.86436 51.8943 1.12858 36.0139 5.55455C31.4509 6.82156 27.1876 8.65358 22.8387 10.828C22.4877 11.0078 22.2822 11.3845 22.3422 11.7783L22.3507 11.7697Z"/></g><g class="fp" transform="translate(420 0)"><path d="M87.6089 51.6546L89.6464 37.512C89.7063 37.0668 89.4409 36.6474 89.0129 36.5104C87.8572 36.1508 85.3831 35.4574 81.8474 34.9523C75.7264 34.0705 72.4219 36.9641 71.6771 42.152C70.9323 47.3484 73.2866 51.0467 79.4076 51.9285C82.9432 52.4336 85.5115 52.4678 86.7186 52.4507C87.1637 52.4422 87.5404 52.1083 87.6089 51.6631L87.6089 51.6546Z"/><path d="M130.55 50.1138C131.423 44.0441 127.057 38.8048 120.029 37.418C110.055 35.449 108.283 39.4298 92.9509 37.3837C92.4543 37.3153 91.9921 37.6663 91.9236 38.1628L89.9118 52.1769C89.8518 52.5707 90.0573 52.9474 90.4083 53.1272C94.7572 55.3016 99.012 57.1337 103.583 58.4007C119.472 62.8181 129.557 57.0823 130.559 50.1223L130.55 50.1138Z"/></g></g></svg>
+  <div class="msg" id="lMsg">그날의 걸음을 따라 들어가는 중입니다</div>
+</div>
+<script>/* 전시실을 열 수 없을 때: 로딩 화면에 이유를 보여 줌 (처음 생긴 이유 하나만) */
+window.__loadFail=m=>{const e=document.getElementById('lMsg');if(!e||e.classList.contains('err'))return;e.textContent=m;e.classList.add('err');const b=document.querySelector('#loader .steps');if(b)b.remove();};
+if(location.protocol==='file:')__loadFail('파일을 직접 열면 사진과 질감을 불러올 수 없습니다. VS Code의 Live Server로 index.html을 열어 주세요.');
+addEventListener('unhandledrejection',()=>__loadFail('전시실을 여는 중 문제가 생겼습니다. 새로고침해 주세요.'));</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+<script>
+(async () => {
+'use strict';
+/* ───────────────────────── 콘텐츠 ───────────────────────── */
+const COL = {wall:'#FDFDFD', ink:'#1A1A1A', accent:'#3B5998', gray:'#6E6E6E', line:'#D9D9D9'};
+const SERIF = '"Busan Dandi Myeongjo", "Noto Serif KR", serif', SANS = '"Pretendard", sans-serif', NUM = '"Pretendard", sans-serif', ANEM = '"Cafe24 Anemone", "Pretendard", sans-serif', TYPE = '"Another Typewriter", monospace';
+
+/* ═════════════════════════════════════════════════════════════════════
+   벽에 붙는 글자 설정 — 글꼴·굵기·크기·위치·줄간격은 여기서만 고치면 됩니다
+   · font: 'serif'=부산단디명조(300/500/700) · 'sans'=Pretendard(400~800)
+           'num'=영문·숫자용 Pretendard · 'anem'=카페24 아네모네(숫자만)
+   · size·x·y·gap 단위는 px. 메인·인트로 벽은 200px = 벽 1m
+   · y는 위에서부터 잰 글자 바닥선 (숫자가 클수록 아래)
+   · minSize: 글이 길어 칸을 넘치면 이 크기까지 자동으로 줄어듦
+   ═════════════════════════════════════════════════════════════════════ */
+const WALL = {
+  /* ── 메인 벽 (그림 1280×1320px = 벽 6.4×6.6m) ── */
+  main: {   // 글 전체(연도~기억을 따라가기)의 위·아래 끝을 인트로 벽 글(제목~BUSAN / KOREA)과 같은 높이에 맞춤
+    left: 80,               // 모든 글자의 왼쪽 시작선
+    lowerDx: 8,             // 1023 아래 제목·설명·'기억을 따라가기'만 좌우로 옮기는 양(px, +는 오른쪽)
+    num:  { dx:-12, size:408, base:594, gap:0, stretchMax:1.5, maxWidth:944, color:COL.accent },
+                            // 1023: dx 숫자만 좌우로 옮기는 양(px, -는 왼쪽) · 크기 · 바닥선 y · 숫자 사이 간격(크기 대비) · 장평 최대 배율 · 최대 폭
+    year:  { text:'1950 – 1953, 피란수도 부산', font:'sans', weight:400, size:43, color:COL.gray, y:238 },
+    city:  { text:'',              font:'sans',  weight:400, size:32, color:COL.gray,   y:228 },   // 필요하면 두 번째 줄로 사용
+    il:    { text:'일',            font:'sans',  weight:800, size:119, color:COL.accent, gap:8 },  // gap: 1023과의 간격
+    title: { lines:['한 도시가 나라와 삶을 함께 품었던 시간'],
+             font:'sans',  weight:700, size:55, color:COL.ink,  y:788, lineGap:74 },
+    sub:   { lines:['항구와 다리, 계단과 마을에 남은 사람들의 기억을 따라갑니다'],
+             font:'sans',  weight:400, size:40, color:COL.gray, y:860, lineGap:54 },
+    bottomY: 1108,          // 맨 아래 줄('기억을 따라가기' · 화살표)의 y
+    cta:   { text:'기억을 따라가기', font:'serif', weight:700, size:42, color:COL.accent },
+    arrow: { gap:28, length:112, width:1.8, color:COL.accent },       // gap: '기억을 따라가기' 글자 끝에서 화살표까지 간격
+    shadow: { x:6, y:16, blur:14, opacity:0.28, color:'#1A2B55' },   // 1023일 아래 그림자: 가로·세로 거리 · 흐림 · 진하기 · 색
+    viewShift: -0.3,        // 메인 카메라를 왼쪽(-)/오른쪽(+)으로 옮기는 양(m). 비스듬히 보는 만큼 글이 가운데로 보이게 보정
+    place: { text:'',  font:'num',   weight:400, size:25, color:COL.ink, letter:2 },   // 메인에는 비워 둠 (인트로 오른쪽 아래에 표시)
+  },
+  /* ── 인트로 벽 (그림 1200×1320px = 벽 6.0×6.6m) ── */
+  intro: {
+    right: 80,              // 오른쪽 여백 (글은 오른쪽 정렬)
+    title:   { font:'serif', weight:700, size:67, minSize:38, color:COL.accent, y:259, bold:1 },   // bold: 글자 테두리를 덧그려 더 굵게(px)
+    body:    { font:'sans',  weight:400, size:31, color:COL.ink, y:361, lineGap:47, paraGap:35 },
+                            // 본문: 첫 줄 y · 줄간격 · 문단 사이 추가 간격 (줄바꿈은 INTRO_P의 \n 위치 그대로)
+    illust:  { x:171, y:607, height:508, opacity:1, color:COL.accent },   // 아래 일러스트(assets/intro-illust.svg): 왼쪽 x · 위쪽 y · 높이 · 불투명도 · 선 색 (질감은 메인 1023과 같은 grungeImg)
+    place:   { text:'BUSAN / KOREA', font:'sans', weight:400, size:30, color:COL.gray, y:1102, letter:0.5 },
+    dimAtMain: { blur:6, opacity:0.55 },                             // 옆 벽을 흐리게(메인에서 볼 때 인트로, 인트로에서 볼 때 메인): 흐림(px) · 불투명도
+  },
+  /* ── 챕터 제목 (사진처럼 벽에 단독으로 거는 패널, 400px = 벽 1m) ── */
+  header: {
+    no:    { font:'num',   weight:600, size:190, color:COL.accent },
+    bar:   { gap:48, width:6, color:COL.accent },                            // 번호 옆 세로 막대: 번호와의 간격 · 굵기
+    title: { font:'serif', weight:700, size:112, color:COL.accent, gap:46 },  // gap: 막대와 제목 사이
+    sub:   { font:'sans',  weight:400, size:50, color:COL.gray, top:96, lineGap:70, maxWidth:980 },
+                            // 설명: 제목 바닥선→첫 줄 바닥선 거리 · 줄간격 · 한 줄 최대 폭(넘으면 두 줄로 나눔)
+    y: 1.85,                // 모바일 패널 가운데 높이(m, 배율 PS 적용 전) — 사진 가운데와 비슷한 눈높이
+    mobile: { font:'serif', weight:700, size:118, fitH:0 },   // 모바일 장 제목(세로쓰기, 부산단디명조): 글자 크기(px) · fitH: 0이면 그대로, 값을 주면 모든 장의 세로 줄 높이를 이 높이(px)로 맞춤
+    web: {   // 웹: 사진 줄 위 왼쪽에 거는 장 제목 (chapter.svg 기준) — 세로 막대 왼쪽 끝 = 첫 사진 액자 왼쪽 끝
+      scale:1.7, y:5.2,                                   // 크기 배율 · 묶음 가운데 높이(m)
+      title: { font:'serif', weight:700, size:112, letter:5, stroke:1.2, color:COL.accent },  // 제목 (부산단디명조, 모바일과 같음) · letter: 자간(px, -는 좁게) · stroke: 글자 테두리 굵기(px)
+      tag:   { size:44, letter:0, gap:26, color:COL.accent, noise:{ size:3, density:0.1 } },   // [E01. Arrive] (Another Typewriter) · 제목과 간격 · 낡은 얼룩: size 얼룩 크기 · density 지워지는 비율(0~1)
+      sub:   { weight:400, size:40, letter:0, gap:40, color:COL.gray },   // 설명 (Pretendard, 한 줄) · 제목 아래 간격
+      bar:   { width:5, gap:50, up:-3, down:-5, color:COL.accent },   // 왼쪽 세로 막대 굵기 · 막대와 글 사이 간격 · 위로/아래로 더 늘리는 길이(px, -는 짧게) · 색
+    },
+  },
+  /* ── 사진 옆 설명 박스 (데스크톱, 그림 폭 688px · 높이는 설명 줄 수에 맞춤) ── */
+  card: {
+    name:   { font:'sans', weight:700, size:36, minSize:24, color:COL.ink, x:4, y:66 },
+    button: { text:'이야기 보기 ↗', font:'sans', weight:500, size:20, color:COL.accent },
+    desc:   { font:'sans', weight:500, size:24, color:COL.ink, y:122, lineGap:38, maxLines:5, bottom:44, chars:28 },   // chars: 한 줄 글자 수(띄어쓰기 포함, 이 수마다 줄바꿈 · 0이면 폭에 맞춰 단어 단위)   // bottom: 마지막 줄 아래 여백 (마지막 줄 바닥선이 액자 아래선과 맞음)
+  },
+  /* ── 사진 밑 지명 박스 (모바일) ── */
+  tag: { font:'sans', weight:700, size:44, color:COL.ink, px:34 },   // px: 모바일 화면에서 지명 줄 높이(px) — 모든 사진에서 같은 크기로 보임
+};
+const PH = 'assets/placeholder.jpg';   // 사진이 준비되면 장소별 photo 경로를 바꿔 주세요.
+
+const CHAPTERS = [
+ {no:'01', tag:'E01. Arrive', title:'부산에 닿다', sub:'항구와 다리를 통해 낯선 부산에 도착한 사람들의 이야기', places:[
+   {name:'부산항 제1부두', cap:'전쟁이 시작되자 부산항은 피란민과 구호물자,\n군수물자가 들어오는 첫 관문이 되었습니다.', photo:'assets/photos/pier-1.jpg', area:'부산 중구 중앙동', geo:[35.1035,129.0400], q:'부산항 제1부두',
+    then:'전쟁이 시작되자 부산항은 피란민과 구호물자, 군수물자가 들어오는 첫 관문이 되었습니다. 배에서 내린 사람들은 이 부두에서 처음 부산을 만났고, 이곳을 거쳐 들어온 물자는 전선과 피란 도시의 살림을 함께 떠받쳤습니다.',
+    now:'재개발이 이어지는 북항 일대에서 옛 부두의 구조와 계류 시설을 찾아볼 수 있습니다.', detailCap:'부두 구조와 계류 시설의 세부'},
+   {name:'영도다리', cap:'1934년 놓인 영도다리는 가운데 상판이 들리는\n도개교로 이름난 부산의 명소였습니다.', scale:1.15, photo:'assets/photos/yeongdo-bridge.jpg', area:'부산 중구 대교동 ↔ 영도구', geo:[35.0957,129.0366], q:'영도대교',
+    then:'1934년 놓인 영도다리는 가운데 상판이 들리는 도개교로 이름난 부산의 명소였습니다. 피란길에 가족과 헤어진 사람들은 “영도다리에서 만나자”는 약속을 품고 다리 주변에서 소식을 기다렸습니다.',
+    now:'복원된 다리는 지금도 정해진 시간에 상판을 들어 올리고, 사람들은 그 길을 건너 일상을 오갑니다.', detailCap:'난간과 도개 구조의 세부'},
+   {name:'부산역, 중앙동 일대', cap:'기차와 배로 몰려든 사람들은 부산역과\n중앙동 일대에 모여들었습니다.', photo:'assets/photos/busan-station.jpg', shot:'2026.10.08', area:'부산 동구 초량동 · 중구 중앙동', geo:[35.1151,129.0415], q:'부산역',
+    then:'기차와 배로 몰려든 사람들은 부산역과 중앙동 일대에 모여들었습니다. 역 앞과 거리는 길을 묻고, 사람을 찾고, 일자리를 구하는 사람들로 붐볐습니다.',
+    now:'부산역 광장과 중앙동 골목은 지금도 도시에 들어오는 사람들이 처음 지나는 길입니다.', detailCap:'역 앞 거리와 오래된 건물의 표지'}
+ ]},
+ {no:'02', tag:'E02. Settle', title:'삶의 자리를 만들다', sub:'머물 곳이 부족한 도시에서 새로운 생활공간을 만들어간 이야기', places:[
+   {name:'아미동 비석문화마을', cap:'갈 곳 없던 피란민들은 산비탈의 옛 일본인 공동묘지\n위에 판잣집을 지었습니다.', photo:'assets/photos/ami-tombstone-village.jpg', shot:'2026.10.16', area:'부산 서구 아미동', geo:[35.0985,129.0148], q:'아미동 비석문화마을',
+    then:'갈 곳 없던 피란민들은 산비탈의 옛 일본인 공동묘지 위에 판잣집을 지었습니다. 묘지의 비석과 상석은 집의 축대와 계단, 담장이 되었습니다.',
+    now:'지금도 골목의 계단과 담장 아래에서 글자가 새겨진 비석 조각을 볼 수 있습니다. 주민이 살고 있는 마을이므로 조용히 둘러봅니다.', detailCap:'축대와 계단에 쓰인 비석 조각'},
+   {name:'우암동 소막마을', cap:'소를 검역하던 시설의 축사는 전쟁 뒤\n피란민의 집이 되었습니다.', photo:'assets/photos/uam-somak-village.jpg', shot:'2026.10.16', area:'부산 남구 우암동', geo:[35.1245,129.0770], q:'우암동 소막마을',
+    then:'소를 검역하던 시설의 축사는 전쟁 뒤 피란민의 집이 되었습니다. 길게 이어진 축사를 칸칸이 나누어 여러 가구가 함께 살았습니다.',
+    now:'축사의 구조를 간직한 집 일부가 남아 기록과 보존의 대상이 되었습니다.', detailCap:'칸을 나눈 축사 구조의 흔적'}
+ ]},
+ {no:'03', tag:'E03. Living', title:'살아내기 위해 일하다', sub:'시장과 계단, 책방에서 생계와 배움을 이어간 사람들의 이야기', places:[
+   {name:'국제시장', zoom:1.12, cap:'피란민들은 구호물자와 군용품, 손에 든 물건을\n내다 팔며 생계를 꾸렸습니다.', photo:'assets/photos/gukje-market.jpg', area:'부산 중구 신창동', geo:[35.1012,129.0285], q:'국제시장',
+    then:'피란민들은 구호물자와 군용품, 손에 든 물건을 내다 팔며 생계를 꾸렸습니다. 하나둘 펼친 좌판과 노점이 모여 큰 시장을 이루었습니다.',
+    now:'골목마다 이어지는 점포와 오래된 간판 사이로 지금도 장 보는 사람들이 오갑니다.', detailCap:'오래된 간판과 가격표'},
+   {name:'40계단', zoom:1.12, cap:'부두와 가까운 40계단 주변은 피란민의 판잣집과\n노점이 모인 생활의 중심이었습니다.', photo:'assets/photos/40-steps.jpg', area:'부산 중구 중앙동', geo:[35.1040,129.0345], q:'40계단',
+    then:'부두와 가까운 40계단 주변은 피란민의 판잣집과 노점이 모인 생활의 중심이었습니다. 헤어진 가족을 찾는 사람들이 이곳에서 소식을 기다리기도 했습니다.',
+    now:'계단과 주변 거리에는 당시의 생활을 떠올리게 하는 조형물과 기념 공간이 조성되어 있습니다.', detailCap:'계단의 단과 난간'},
+   {name:'보수동 책방골목', cap:'책을 팔아 생계를 잇는 사람과 교과서를 구하려는\n학생들이 이 골목을 찾았습니다.', photo:'assets/photos/bosu-books.jpg', area:'부산 중구 보수동', geo:[35.1035,129.0258], q:'보수동책방골목',
+    then:'피란 시절 골목에 헌책 노점이 생겨났습니다. 책을 팔아 생계를 잇는 사람과 교과서를 구하려는 학생들이 이 골목을 찾았습니다.',
+    now:'좁은 골목 양쪽으로 천장까지 책을 쌓은 책방들이 이어집니다.', detailCap:'쌓인 헌책과 책방 간판'}
+ ]},
+ {no:'04', tag:'E04. Capital', title:'수도가 된 부산', sub:'피란민의 생활공간이자 대한민국의 행정 중심지가 된 부산의 이야기', places:[
+   {name:'임시수도기념관', cap:'경상남도지사 관사로 지어진 이 건물은 피란수도 시기\n대통령 관저로 쓰였습니다.', photo:'assets/photos/provisional-capital-memorial.jpg', shot:'2026.10.16', area:'부산 서구 부민동', geo:[35.1028,129.0168], q:'임시수도기념관',
+    then:'경상남도지사 관사로 지어진 이 건물은 피란수도 시기 대통령 관저로 쓰였습니다.',
+    now:'기념관으로 공개되어 당시의 응접실과 집무 공간, 피란 시절의 생활 자료를 볼 수 있습니다.', detailCap:'관저 내부 공간 (촬영 허가 확인)'},
+   {name:'동아대학교 석당박물관', cap:'경상남도청 건물은 피란수도 시기 정부 청사인\n임시중앙청으로 쓰였습니다.', photo:'assets/photos/seokdang-museum.jpg', shot:'2026.10.16', area:'부산 서구 부민동', geo:[35.1010,129.0180], q:'동아대학교 석당박물관',
+    then:'경상남도청 건물은 피란수도 시기 정부 청사인 임시중앙청으로 쓰였습니다. 거리에서 삶이 이어지는 동안 이 건물에서는 국가의 업무가 계속되었습니다.',
+    now:'지금은 동아대학교 석당박물관으로 쓰이며, 붉은 벽돌 외관을 간직하고 있습니다.', detailCap:'붉은 벽돌 외관과 창의 세부'},
+   {name:'부산근현대역사관', cap:'근대 건축이 남아 있는 원도심 대청동 일대는 피란수도 시기\n도시의 여러 기능이 모여 있던 곳입니다.', photo:'assets/photos/modern-history-museum.jpg', area:'부산 중구 대청동', geo:[35.1020,129.0312], q:'부산근현대역사관',
+    then:'근대 건축이 남아 있는 원도심 대청동 일대는 피란수도 시기 도시의 여러 기능이 모여 있던 곳입니다.',
+    now:'옛 건물을 고쳐 문을 연 역사관에서 부산의 근현대와 피란수도 시기의 자료를 살펴볼 수 있습니다.', detailCap:'역사관 건물의 현재 모습'}
+ ]}
+];
+// 장마다 이름이 정해진 장소만 전시 (사진이 없는 장소는 '사진 준비 중'으로 표시)
+const INTRO_TITLE = '피란수도 부산, 삶이 이어진 도시';
+const INTRO_P = ['한국전쟁이 시작된 뒤, 정부와 수많은 피란민이 부산으로 향했습니다.\n부산은 총 1,023일 동안 대한민국의 피란수도가 되어\n국가의 기능을 이어가고, 사람들의 삶을 품었습니다.',
+                 '이 전시는 항구와 다리, 계단과 마을에 남은 흔적을 따라\n그 시간을 살아낸 사람들의 이야기를\n오늘의 시선으로 바라봅니다.'];
+const END_TITLE = '오늘, 부산에 남은 기억';
+const END_P = ['1,023일의 시간은 지나갔지만,\n그날의 삶은 부산 곳곳에 남아 있습니다.', '항구와 다리, 골목과 계단을 따라 우리는\n오늘의 부산에서 그 시간을 다시 만납니다.'];
+
+/* ───────────────────────── 유틸 ───────────────────────── */
+const $ = s => document.querySelector(s);
+const rand = (a,b) => a + Math.random()*(b-a);
+const pad = n => String(n).padStart(2,'0');
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glue = s => esc(s||'').replace(/”([가-힣]+)/g,'<span class="nw">”$1</span>');   // 닫는 따옴표 뒤 조사(”는)가 다음 줄로 떨어지지 않게
+const firstSentence = t => { const m = t.match(/^.*?다\.(?=\s|$)/); return m ? m[0] : t; };
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function cv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function font(ctx,w,s,fam){ctx.font=`${w} ${s}px ${fam==='serif'?SERIF:fam==='num'?NUM:fam==='anem'?ANEM:fam==='type'?TYPE:SANS}`;}
+function spacing(ctx,px){try{ctx.letterSpacing=px+'px';}catch(e){}}
+function wrap(ctx,text,maxW){
+  const out=[];
+  text.split('\n').forEach(par=>{
+    let line='';
+    par.split(' ').forEach(word=>{
+      const test=line?line+' '+word:word;
+      if(ctx.measureText(test).width>maxW && line){out.push(line);line=word;} else line=test;
+      while(ctx.measureText(line).width>maxW && line.length>1){
+        let i=line.length; while(i>1 && ctx.measureText(line.slice(0,i)).width>maxW) i--;
+        out.push(line.slice(0,i)); line=line.slice(i);
+      }
+    });
+    out.push(line);
+  });
+  return out;
+}
+function drawLines(ctx,lines,x,y,lh){lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));return y+lines.length*lh;}
+function loadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src;});}
+function drawCover(ctx,img,x,y,w,h,fy){
+  if(!img){ctx.fillStyle=COL.line;ctx.fillRect(x,y,w,h);return;}
+  const s=Math.max(w/img.width,h/img.height),sw=w/s,sh=h/s;
+  ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)*(fy??.5),sw,sh,x,y,w,h);
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+/* ───────────────────────── 로더 ───────────────────────── */
+const loader=$('#loader'),lMsg=$('#lMsg');
+
+const IMG={};
+try{
+  const sample=JSON.stringify(CHAPTERS)+INTRO_TITLE+INTRO_P.join('')+END_TITLE+END_P.join('')+'0123456789,-~·—–“”→↗↑↔ 1950 1953 피란수도 부산 한 도시가 나라와 삶을 함께 품었던 시간 항구와 다리 계단과 마을에 남은 사람들의 기억을 따라갑니다 기억을 따라가기 일 이야기 보기 사진 준비 중 개략 위치도 장소 확정 후 정식 지도로 교체 ONLINE EXHIBITION';
+  const specs=['400 30px "Pretendard"','500 30px "Pretendard"','600 30px "Pretendard"','700 30px "Pretendard"','800 30px "Pretendard"','500 30px "Busan Dandi Myeongjo"','700 30px "Busan Dandi Myeongjo"','400 30px "Cafe24 Anemone"','400 30px "Another Typewriter"'];
+  const imgs=Promise.all([['wall','assets/wall.jpg'],['floor','assets/floor-stone.jpg'],['bridge','assets/intro-photo.jpg'],['illust','assets/intro-illust.svg'],['ph',PH],['grunge','assets/grunge.jpg']].map(async([k,s])=>IMG[k]=await loadImg(s)).concat(CHAPTERS.flatMap(ch=>ch.places).filter(p=>p.photo).map(async p=>{p.img=await loadImg(p.photo);})));
+  await Promise.race([Promise.all([...specs.map(f=>document.fonts.load(f,sample)),imgs]),new Promise(r=>setTimeout(r,7000))]);
+  await imgs;
+}catch(e){}
+if(!lMsg.classList.contains('err'))lMsg.textContent='그날의 걸음을 따라 들어가는 중입니다';
+await new Promise(r=>setTimeout(r,30));
+
+if(!window.THREE){lMsg.textContent='3D 화면을 불러오지 못했습니다. 네트워크를 확인한 뒤 새로고침해 주세요.';return;}
+const T=THREE;
+
+/* ───────────────────────── 캔버스 그래픽 (시안 색·글꼴) ───────────────────────── */
+function paper(ctx,w,h){
+  ctx.fillStyle=COL.wall;ctx.fillRect(0,0,w,h);
+  if(IMG.wall){ctx.fillStyle=ctx.createPattern(IMG.wall,'repeat');ctx.fillRect(0,0,w,h);}
+}
+// 메인 벽 (5.2 × 4.6m): 참고 이미지처럼 왼쪽 정렬. 숫자는 벽 위에서 0 → 1023으로 올라갑니다.
+const MAIN_W=1280,MAIN_H=1320,TXT_X=WALL.main.left,NUM_X=TXT_X+(WALL.main.num.dx||0),LOW_X=TXT_X+(WALL.main.lowerDx||0),NUM_BASE=WALL.main.num.base,CTA_Y=WALL.main.bottomY;   // 값은 위쪽 WALL.main에서 고칩니다
+let NUM_FS=300,NUM_W=0;
+let mainTextCv=null,MAIN_BOX=null,INTRO_CX=600;   // MAIN_BOX: 메인 벽에서 글자가 차지하는 영역(px)
+// 메인 패널: 참고 이미지처럼 거친 종이 질감 + 찍어 누른 듯 낡은(스탬프) 1023 + 왼쪽 세로 잉크 띠
+function rnd(seed){let t=seed>>>0;return()=>{t+=0x6D2B79F5;let r=Math.imul(t^t>>>15,1|t);r^=r+Math.imul(r^r>>>7,61|r);return((r^r>>>14)>>>0)/4294967296;};}
+function grunge(c,seed,amt){   // 잉크를 군데군데 벗겨 낡은 인쇄 느낌으로
+  const x=c.getContext('2d'),W=c.width,H=c.height,R=rnd(seed),a=amt||1;x.save();x.globalCompositeOperation='destination-out';
+  for(let i=0;i<26*a;i++){const cx=R()*W,cy=R()*H,r=20+R()*90,g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,'rgba(0,0,0,'+(.18+R()*.3)+')');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(cx-r,cy-r,2*r,2*r);}
+  for(let i=0;i<3200*a;i++){x.globalAlpha=.35+R()*.65;x.beginPath();x.arc(R()*W,R()*H,.4+R()*R()*3.2,0,7);x.fill();}
+  x.globalAlpha=1;x.strokeStyle='#000';x.lineCap='round';
+  for(let i=0;i<70*a;i++){const sx=R()*W,sy=R()*H,l=10+R()*90,an=(R()-.5)*1.2+(R()<.5?0:Math.PI/2);x.globalAlpha=.25+R()*.55;x.lineWidth=.5+R()*1.6;x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+Math.cos(an)*l,sy+Math.sin(an)*l);x.stroke();}
+  for(let i=0;i<40*a;i++){const sy=R()*H,sx=R()*W;x.globalAlpha=.12+R()*.25;x.lineWidth=1+R()*3;x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+60+R()*200,sy+(R()-.5)*6);x.stroke();}
+  // 얼룩덜룩하게 벗겨진 잉크: 큰 얼룩·중간 얼룩·미세 입자를 겹쳐 지움
+  [[40,5,.55],[130,7,.7],[380,9,.8]].forEach(([n,pw,al])=>{const m=cv(n,Math.round(n*H/W)),mx=m.getContext('2d'),im=mx.createImageData(m.width,m.height);
+    for(let i=0;i<im.data.length;i+=4){im.data[i+3]=Math.pow(R(),pw)*255;}mx.putImageData(im,0,0);
+    x.globalAlpha=al*a;x.imageSmoothingEnabled=true;x.drawImage(m,0,0,W,H);});
+  x.restore();
+  const im=x.getImageData(0,0,W,H),d=im.data;for(let i=3;i<d.length;i+=4){if(d[i]){const r=R();d[i]=r<.035*a?0:d[i]*(.86+.14*R());}}x.putImageData(im,0,0);
+  return c;}
+function grungeImg(c,bb){   // 그런지 질감 이미지: 밝은 부분일수록 잉크를 지움 (bb: 질감을 펼칠 영역 {x,y,w,h} — 없으면 메인 1023 숫자 띠, 인트로 일러스트도 같은 함수 사용)
+  const W=c.width,H=c.height,src=IMG.grunge,m=cv(W,H),mx=m.getContext('2d');
+  // 숫자가 놓인 띠에만, 질감 이미지의 고르게 거친 왼쪽 위 부분을 펼쳐 씀 (큰 흰 얼룩이 한 글자를 통째로 지우지 않게)
+  const bx=bb?bb.x:NUM_X-20,bw=bb?bb.w:NUM_W+60,by=bb?bb.y:NUM_BASE-NUM_FS*1.02,bh=bb?bb.h:NUM_FS*1.16,   /* 아네모네의 긴 세로 길이 전체에 질감 */sw=src.width*0.95,sh=Math.min(src.height,sw*bh/bw);
+  mx.fillStyle='#616161';mx.fillRect(0,0,W,H);
+  if(!bb&&NUM_DX.length>=4){const k=sw/bw;   /* '2','3'도 '1','0'이 쓰는 고른 왼쪽 영역 질감을 좌우 반전해 사용 */
+    const src01=[NUM_DX[0],NUM_DX[1]];NUM_DX.forEach(([dx,dw],i)=>{const [ox,ow]=src01[i%2],sx0=(ox-12-bx)*k,sw0=(ow+24)*k;
+      mx.save();if(i>=2){mx.translate(2*dx+dw,0);mx.scale(-1,1);}mx.drawImage(src,Math.max(0,sx0),0,sw0,sh,dx-12,by,dw+24,bh);mx.restore();});}
+  else mx.drawImage(src,0,0,sw,sh,bx,by,bw,bh);
+  // 밝기 고르게: 질감의 큰 명암(흰 얼룩·어두운 부분)은 빼고 입자·작은 얼룩만 남겨 네 숫자가 같은 정도로 거칠어 보이게
+  const lo=cv(40,Math.round(40*H/W)),lx=lo.getContext('2d');lx.imageSmoothingQuality='high';lx.drawImage(m,0,0,lo.width,lo.height);
+  const bl=cv(W,H),bx2=bl.getContext('2d');bx2.imageSmoothingQuality='high';bx2.drawImage(lo,0,0,W,H);const B=bx2.getImageData(0,0,W,H).data;
+  // 도장 얼룩: 잉크가 덜 묻은 중간 크기 얼룩 (임의 잡음을 크게 늘려 씀)
+  const R=rnd(21),blob=(n)=>{const q=cv(n,Math.max(2,Math.round(n*H/W))),qx=q.getContext('2d'),qi=qx.createImageData(q.width,q.height);
+    for(let i=0;i<qi.data.length;i+=4){const v=R()*255;qi.data[i]=qi.data[i+1]=qi.data[i+2]=v;qi.data[i+3]=255;}qx.putImageData(qi,0,0);
+    const o=cv(W,H),ox=o.getContext('2d');ox.imageSmoothingQuality='high';ox.drawImage(q,0,0,W,H);return ox.getImageData(0,0,W,H).data;};
+  const P1=blob(70),P2=blob(26);
+  // 잉크 가장자리 위치(번진 알파)를 구해 가장자리를 거칠게 뜯어냄
+  const lo2=cv(W/4,H/4),l2=lo2.getContext('2d');l2.drawImage(c,0,0,lo2.width,lo2.height);const eb=cv(W,H),ebx=eb.getContext('2d');ebx.imageSmoothingQuality='high';ebx.drawImage(lo2,0,0,W,H);const E=ebx.getImageData(0,0,W,H).data;
+  const x=c.getContext('2d'),ink=x.getImageData(0,0,W,H),d=ink.data,T=mx.getImageData(0,0,W,H).data;
+  for(let i=3;i<d.length;i+=4){if(!d[i])continue;
+    let v=(T[i-3]-B[i-3]+105)+(P1[i-3]-128)*.3+(P2[i-3]-128)*.25;   /* 숫자 '1' 정도의 고른 거칠기 */
+    const e=E[i]/255;if(e<.85)v+=(.85-e)*60;            // 가장자리일수록 더 뜯기게
+    d[i]=v>158?0:v>150?d[i]*(158-v)/8:v>138?d[i]*.85:d[i];}
+  x.putImageData(ink,0,0);
+  // 잉크를 조금 더 진하게 눌러 찍은 느낌 (같은 파란 계열에서 대비만 올림)
+  x.save();x.globalCompositeOperation='source-atop';x.fillStyle='#2B4479';x.globalAlpha=.6;x.fillRect(0,0,W,H);x.restore();
+  // 하얗게 긁힌 자국
+  x.save();x.globalCompositeOperation='destination-out';x.strokeStyle='#000';x.lineCap='round';
+  for(let k=0;k<16;k++){let px=bb?bb.x+R()*bb.w:NUM_X+R()*NUM_W,py=bb?bb.y+R()*bb.h:NUM_BASE-NUM_FS*.98+R()*NUM_FS*1.05,an=R()*7;x.lineWidth=.6+R()*1.4;x.globalAlpha=.7+R()*.3;x.beginPath();x.moveTo(px,py);
+    for(let j=0;j<5+R()*8;j++){an+=(R()-.5)*.5;const l=10+R()*30;px+=Math.cos(an)*l;py+=Math.sin(an)*l;x.lineTo(px,py);}x.stroke();}
+  x.restore();
+  // 도장을 두 번 찍은 듯 옅게 어긋난 자국 + 가장자리 잉크 튐
+  const gh=cv(W,H),gx=gh.getContext('2d');gx.drawImage(c,0,0);x.save();x.globalCompositeOperation='destination-over';x.globalAlpha=.16;x.drawImage(gh,7,5);x.restore();
+  x.save();x.fillStyle=COL.accent;for(let k=0;k<700;k++){const px=bb?bb.x+R()*bb.w:NUM_X-10+R()*(NUM_W+20),py=bb?bb.y+R()*bb.h:NUM_BASE-NUM_FS*1.02+R()*NUM_FS*1.12,j=((Math.round(py)*W+Math.round(px))*4)+3;
+    if(E[j]>25&&E[j]<170){x.globalAlpha=.4+R()*.5;x.beginPath();x.arc(px+(R()-.5)*8,py+(R()-.5)*8,.5+R()*R()*2.2,0,7);x.fill();}}x.restore();
+  return c;}
+function grungeTex(c,seed){   // 그런지 질감: 날카롭게 패인 얼룩 구멍 + 금 + 거친 입자 + 짙은 반점
+  const x=c.getContext('2d'),W=c.width,H=c.height,R=rnd(seed);
+  const nf=cv(W,H),nx=nf.getContext('2d');nx.fillStyle='#000';nx.fillRect(0,0,W,H);nx.globalCompositeOperation='lighter';
+  [[22,.34],[80,.33],[300,.33]].forEach(([n,al])=>{const m=cv(n,Math.max(2,Math.round(n*H/W))),mx=m.getContext('2d'),im=mx.createImageData(m.width,m.height);
+    for(let i=0;i<im.data.length;i+=4){const v=R()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255;}mx.putImageData(im,0,0);
+    nx.globalAlpha=al;nx.imageSmoothingEnabled=true;nx.drawImage(m,0,0,W,H);});
+  const N=nx.getImageData(0,0,W,H).data,im=x.getImageData(0,0,W,H),d=im.data,thr=158,soft=14;
+  for(let i=3;i<d.length;i+=4){if(!d[i])continue;const v=N[i-3];
+    if(v>thr)d[i]=0;else if(v>thr-soft)d[i]*= (thr-v)/soft;
+    const r=R();if(r<.025)d[i]=0;else if(r<.09)d[i]*=.45;}
+  x.putImageData(im,0,0);
+  x.save();x.globalCompositeOperation='destination-out';x.strokeStyle='#000';x.lineCap='round';x.lineJoin='round';
+  for(let k=0;k<34;k++){let px=R()*W,py=R()*H,an=R()*7;x.lineWidth=.7+R()*1.6;x.globalAlpha=.6+R()*.4;x.beginPath();x.moveTo(px,py);
+    const n=6+R()*16;for(let j=0;j<n;j++){an+=(R()-.5)*1.1;const l=4+R()*14;px+=Math.cos(an)*l;py+=Math.sin(an)*l;x.lineTo(px,py);}x.stroke();}
+  for(let k=0;k<1400;k++){x.globalAlpha=.5+R()*.5;x.beginPath();x.arc(R()*W,R()*H,.4+R()*R()*2.6,0,7);x.fill();}
+  x.globalCompositeOperation='source-atop';x.fillStyle='#22386A';
+  for(let k=0;k<900;k++){x.globalAlpha=.18+R()*.3;x.beginPath();x.arc(R()*W,R()*H,.5+R()*R()*3,0,7);x.fill();}
+  x.restore();return c;}
+function grainPaper(x,W,H){   // 종이 바탕 + 얼룩 + 미세 입자 + 섬유
+  paper(x,W,H);const R=rnd(11);
+  for(let i=0;i<46;i++){const cx=R()*W,cy=R()*H,r=60+R()*240,g=x.createRadialGradient(cx,cy,0,cx,cy,r);const d=R()<.6;g.addColorStop(0,d?'rgba(120,110,95,'+(.025+R()*.035)+')':'rgba(255,255,255,'+(.05+R()*.08)+')');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(cx-r,cy-r,2*r,2*r);}
+  const im=x.getImageData(0,0,W,H),d=im.data;for(let i=0;i<d.length;i+=4){const n=(R()-.5)*14;d[i]+=n;d[i+1]+=n;d[i+2]+=n*.9;}x.putImageData(im,0,0);
+  x.strokeStyle='rgba(110,100,85,.10)';x.lineWidth=.7;for(let i=0;i<380;i++){const sx=R()*W,sy=R()*H,an=R()*7,l=4+R()*14;x.beginPath();x.moveTo(sx,sy);x.quadraticCurveTo(sx+Math.cos(an)*l*.6+R()*4,sy+Math.sin(an)*l*.6+R()*4,sx+Math.cos(an)*l,sy+Math.sin(an)*l);x.stroke();}
+  x.fillStyle='rgba(90,80,70,.25)';for(let i=0;i<900;i++){x.globalAlpha=.2+R()*.6;x.fillRect(R()*W,R()*H,1,1);}x.globalAlpha=1;
+}
+function inkStrip(x,X,y0,y1){   // 왼쪽 세로로 찍힌 잉크 띠
+  const c=cv(40,Math.ceil(y1-y0)),g=c.getContext('2d'),R=rnd(5);g.fillStyle=COL.accent;
+  for(let y=0;y<c.height;){const l=6+R()*70,w=2.6+R()*3.8,o=(R()-.5)*3;g.globalAlpha=.7+R()*.3;g.fillRect(20+o-w/2,y,w,l);y+=l+(R()<.3?2+R()*14:0);}
+  for(let i=0;i<120;i++){g.globalAlpha=.3+R()*.5;g.fillRect(20+(R()-.5)*14,R()*c.height,1+R()*2.5,1+R()*3);}
+  g.globalAlpha=1;grunge(c,9,.35);x.drawImage(c,X-20,y0);
+}
+let NUM_CV=null,NUM_SX=1;const NUM_DX=[];
+const NUM_DY=[0,0,0,0];   // 숫자 기준선은 모두 같게
+function numberCanvas(){
+  const W=MAIN_W,H=MAIN_H,c=cv(W,H),x=c.getContext('2d');x.fillStyle=WALL.main.num.color;font(x,400,NUM_FS,'anem');
+  let X=0;const digits='1023';x.save();x.translate(NUM_X,0);x.scale(NUM_SX,1);   // 가로로 살짝 좁혀 키 큰 숫자로
+  NUM_DX.length=0;for(let i=0;i<4;i++){const ch=digits[i],w=x.measureText(ch).width;x.fillText(ch,X,NUM_BASE+NUM_DY[i]);NUM_DX.push([NUM_X+X*NUM_SX,w*NUM_SX]);X+=w+NUM_FS*WALL.main.num.gap;}
+  x.restore();NUM_W=(X-NUM_FS*WALL.main.num.gap)*NUM_SX;
+  { // '일'도 숫자와 같은 판에 그려 같은 질감을 입힘 (아랫선은 1023 숫자 아랫선에 맞춤)
+    const I=WALL.main.il,dD=x.measureText('3').actualBoundingBoxDescent||0;font(x,I.weight,I.size,I.font);const iD=x.measureText(I.text).actualBoundingBoxDescent||0,iw=x.measureText(I.text).width,ix=NUM_X+NUM_W+I.gap;
+    x.fillStyle=I.color;x.fillText(I.text,ix,NUM_BASE+NUM_DY[3]+dD-iD);NUM_DX.push([ix,iw]);font(x,400,NUM_FS,'anem'); }
+  if(IMG.grunge)grungeImg(c);else grungeTex(c,3);
+  // 잉크가 번진 듯한 아주 옅은 자국
+  x.save();x.globalCompositeOperation='destination-over';x.globalAlpha=.08;x.filter='blur(1.5px)';x.drawImage(c,2,3);x.restore();
+  { // 벽에 붙인 입체 글자처럼 아래로 떨어지는 그림자
+    const Sh=WALL.main.shadow,sc=cv(W,H),sx=sc.getContext('2d');sx.drawImage(c,0,0);sx.globalCompositeOperation='source-in';sx.fillStyle=Sh.color;sx.fillRect(0,0,W,H);
+    x.save();x.globalCompositeOperation='destination-over';x.globalAlpha=Sh.opacity;x.filter='blur('+Sh.blur+'px)';x.drawImage(sc,Sh.x,Sh.y);x.restore(); }
+  return c;
+}
+function mainBase(){   // 메인 벽 글자 그리기 — 값은 위쪽 WALL.main에서 고칩니다
+  const W=MAIN_W,H=MAIN_H,p=cv(W,H),S=WALL.main,N=S.num;
+  // 1023 숫자: 크기 N.size, 장평은 N.stretchMax배까지 · 전체 폭 N.maxWidth 이내
+  NUM_FS=N.size;const m=cv(8,8).getContext('2d');font(m,400,NUM_FS,'anem');let w=0;for(const ch of '1023')w+=m.measureText(ch).width+NUM_FS*N.gap;w-=NUM_FS*N.gap;
+  NUM_SX=Math.min(N.stretchMax,N.maxWidth/w);NUM_CV=numberCanvas();
+  const c=cv(W,H),x=c.getContext('2d');mainTextCv=c;
+  const B={l:1e9,r:-1e9,t:1e9,b:-1e9},grow=(l,r,t,b)=>{B.l=Math.min(B.l,l);B.r=Math.max(B.r,r);B.t=Math.min(B.t,t);B.b=Math.max(B.b,b);};   // 글자가 차지하는 영역(화면 가운데 맞춤용)
+  const put=(o,t,y,X=TXT_X)=>{if(!t)return;x.fillStyle=o.color;font(x,o.weight,o.size,o.font);x.fillText(t,X,y);const mt=x.measureText(t);grow(X,X+mt.width,y-(mt.actualBoundingBoxAscent||o.size*.8),y+(mt.actualBoundingBoxDescent||0));};
+  { const mm=cv(8,8).getContext('2d');font(mm,400,NUM_FS,'anem');const a=mm.measureText('1023');grow(NUM_X,NUM_X+NUM_W,NUM_BASE-(a.actualBoundingBoxAscent||NUM_FS*.75),NUM_BASE+(a.actualBoundingBoxDescent||0)); }
+  put(S.year,S.year.text,S.year.y);
+  put(S.city,S.city.text,S.city.y);
+  { x.fillStyle=S.il.color;font(x,S.il.weight,S.il.size,S.il.font);grow(NUM_X,NUM_X+NUM_W+S.il.gap+x.measureText(S.il.text).width,NUM_BASE,NUM_BASE); }   // '일'은 숫자 판(numberCanvas)에서 그림
+  S.title.lines.forEach((t,i)=>put(S.title,t,S.title.y+i*S.title.lineGap,LOW_X));
+  S.sub.lines.forEach((t,i)=>put(S.sub,t,S.sub.y+i*S.sub.lineGap,LOW_X));
+  x.fillStyle=S.place.color;font(x,S.place.weight,S.place.size,S.place.font);spacing(x,S.place.letter);
+  x.textAlign='right';x.fillText(S.place.text,W-TXT_X,CTA_Y);x.textAlign='left';if(S.place.text)grow(W-TXT_X-x.measureText(S.place.text).width,W-TXT_X,CTA_Y-S.place.size,CTA_Y);spacing(x,0);
+  { const C=S.cta;font(x,C.weight,C.size,C.font);grow(LOW_X,Math.max(LOW_X+x.measureText(C.text).width,LOW_X+x.measureText(C.text).width+S.arrow.gap+S.arrow.length),CTA_Y-C.size,CTA_Y+8); }   // '기억을 따라가기' + 화살표
+  MAIN_BOX=B;
+  return p;
+}
+function drawNumber(x,v){if(NUM_CV)x.drawImage(NUM_CV,0,0);}
+function illustInk(w,h){   // 인트로 일러스트: 선을 WALL.intro.illust.color로 칠하고, 메인 1023과 같은 그런지 질감(grungeImg)을 입힘
+  const Il=WALL.intro.illust,W=Math.ceil(w),H=Math.ceil(h),c=cv(W,H),x=c.getContext('2d');
+  x.drawImage(IMG.illust,0,0,W,H);x.globalCompositeOperation='source-in';x.fillStyle=Il.color;x.fillRect(0,0,W,H);x.globalCompositeOperation='source-over';
+  if(IMG.grunge)try{grungeImg(c,{x:0,y:0,w:W,h:H});}catch(e){}   // 메인 1023과 같은 그런지 질감 · 파일로 직접 열면 색만 바꿈
+  return c;}
+function introCanvas(){ // 인트로 벽 (6 × 6.6m) — 값은 위쪽 WALL.intro에서 고칩니다
+  const W=1200,H=1320,c=cv(W,H),x=c.getContext('2d'),S=WALL.intro,R=W-S.right,T=S.title,B=S.body,Il=S.illust,P=S.place;
+  let L=R;   // 글·그림이 차지하는 왼쪽 끝 (화면 가운데 맞춤용)
+  if(IMG.illust){const ih=Il.height,iw=ih*(IMG.illust.width||1541)/(IMG.illust.height||1454);x.globalAlpha=Il.opacity;x.drawImage(illustInk(iw,ih),Il.x,Il.y);x.globalAlpha=1;L=Math.min(L,Il.x);}
+  x.textAlign='right';
+  x.fillStyle=T.color;let fs=T.size;font(x,T.weight,fs,T.font);while(x.measureText(INTRO_TITLE).width>R-40&&fs>T.minSize){fs-=2;font(x,T.weight,fs,T.font);}
+  x.fillText(INTRO_TITLE,R,T.y);if(T.bold){x.strokeStyle=T.color;x.lineWidth=T.bold;x.lineJoin='round';x.strokeText(INTRO_TITLE,R,T.y);}L=Math.min(L,R-x.measureText(INTRO_TITLE).width);
+  x.fillStyle=B.color;font(x,B.weight,B.size,B.font);
+  let y=B.y;INTRO_P.forEach(para=>{para.split('\n').forEach(line=>{x.fillText(line,R,y);L=Math.min(L,R-x.measureText(line).width);y+=B.lineGap;});y+=B.paraGap;});
+  x.fillStyle=P.color;font(x,P.weight,P.size,P.font);spacing(x,P.letter);x.fillText(P.text,R,P.y);spacing(x,0);
+  x.textAlign='left';
+  INTRO_CX=(L+R)/2;
+  return c;
+}
+function split2(x,t,maxW){   // 한 줄에 안 들어가면 두 줄로, 두 줄 길이가 최대한 비슷하게 나눔
+  if(x.measureText(t).width<=maxW)return [t];
+  let best=null;for(let i=t.indexOf(' ');i>0;i=t.indexOf(' ',i+1)){const a=t.slice(0,i),b=t.slice(i+1),w=Math.max(x.measureText(a).width,x.measureText(b).width);if(!best||w<best.w)best={w,l:[a,b]};}
+  return best?best.l:[t];}
+function wearNoise(x,W,H,N,k){   // 찍힌 글자가 낡은 느낌: 큰 얼룩 모양으로 글자를 띄엄띄엄 지워 벽이 그대로 보이게 (경계는 또렷하게)
+  const R=rnd(1800),sz=N.size*k,sm=t=>t*t*(3-2*t);   // size: 얼룩 크기 · density: 지워지는 비율(0~1)
+  const oct=[[1,8],[2.3,3],[5.5,1.2]].map(([f,w])=>{const c=sz/f,nx=Math.ceil(W/c)+2,ny=Math.ceil(H/c)+2;return {c,w,nx,a:Array.from({length:nx*ny},R)};});   // 큰 얼룩 + 들쭉날쭉한 가장자리
+  const val=(o,X,Y)=>{const fx=X/o.c,fy=Y/o.c,x0=fx|0,y0=fy|0,tx=sm(fx-x0),ty=sm(fy-y0),w=o.nx,A=o.a;
+    return (A[y0*w+x0]*(1-tx)+A[y0*w+x0+1]*tx)*(1-ty)+(A[(y0+1)*w+x0]*(1-tx)+A[(y0+1)*w+x0+1]*tx)*ty;};
+  const im=x.getImageData(0,0,W,H),d=im.data,V=new Float32Array(W*H),seen=[];
+  for(let y=0;y<H;y++)for(let X=0;X<W;X++){const p=y*W+X;if(!d[p*4+3])continue;let v=0;for(const o of oct)v+=val(o,X,y)*o.w;V[p]=v;seen.push(v);}
+  seen.sort((a,b)=>a-b);const th=seen[Math.floor(seen.length*(1-Math.min(1,Math.max(0,N.density))))]??Infinity;   // 글자 면적의 density만큼만 지움
+  for(let p=0;p<W*H;p++)if(d[p*4+3]&&V[p]>=th)d[p*4+3]=0;   // 반투명 없이 딱 잘라 지움 → 경계가 분명
+  x.putImageData(im,0,0);}
+function webHeaderCanvas(ch,vert){   // 웹: 「| 제목 [E01. Arrive]」 + 설명 한 줄, 왼쪽 정렬 — 값은 WALL.header.web
+  // vert(모바일): 같은 글꼴·모양으로 세로 배치 — 제목 / [E01. Arrive] / 설명(두 줄)
+  const K=WALL.header.web,T=K.title,G=K.tag,Sb=K.sub,Br=K.bar,m=cv(8,8).getContext('2d'),PAD=24;
+  font(m,T.weight,T.size,T.font||'sans');spacing(m,T.letter||0);const tw0=m.measureText(ch.title).width;
+  font(m,400,G.size,'type');spacing(m,G.letter||0);const gw=m.measureText(`[${ch.tag}]`).width;
+  font(m,Sb.weight,Sb.size,'sans');spacing(m,Sb.letter||0);const subs=vert?split2(m,ch.sub,1):[ch.sub],sw=Math.max(...subs.map(l=>m.measureText(l).width));
+  const up=Br.up||0,dn=Br.down||0,tx=PAD+Br.width+Br.gap,top=PAD+Math.max(0,up),tY=top+T.size*0.86,gY=vert?tY+G.gap+G.size*0.95:tY,sY=gY+Sb.gap+Sb.size*0.9,SL=Sb.size*1.5,bot=sY+(subs.length-1)*SL+Sb.size*0.25;
+  const W=Math.ceil(tx+Math.max(vert?Math.max(tw0,gw):tw0+G.gap+gw,sw)+PAD),H=Math.ceil(bot+Math.max(0,dn)+PAD),c=cv(W,H),x=c.getContext('2d');
+  x.fillStyle=Br.color;x.fillRect(PAD,top-up,Br.width,bot-top+up+dn);   // 기본: 제목 위끝 ~ 설명 아래끝
+  x.fillStyle=T.color;font(x,T.weight,T.size,T.font||'sans');spacing(x,T.letter||0);x.fillText(ch.title,tx,tY);if(T.stroke){x.strokeStyle=T.color;x.lineWidth=T.stroke;x.lineJoin='round';x.strokeText(ch.title,tx,tY);}
+  x.fillStyle=Sb.color;font(x,Sb.weight,Sb.size,'sans');spacing(x,Sb.letter||0);subs.forEach((l,i)=>x.fillText(l,tx,sY+i*SL));
+  const t=cv(W,H),tc=t.getContext('2d');tc.fillStyle=G.color;font(tc,400,G.size,'type');spacing(tc,G.letter||0);tc.fillText(`[${ch.tag}]`,vert?tx:tx+tw0+G.gap,gY);   // 태그는 따로 그려 얼룩을 지운 뒤 합침
+  wearNoise(tc,W,H,G.noise,G.size/14);x.drawImage(t,0,0);
+  c.padX=PAD;return c;
+}
+function vertHeaderCanvas(ch){   // 모바일 장 제목: 오른쪽에 제목 세로쓰기 + 왼쪽 막대 옆 [태그]·설명 두 줄(가로) — 값은 WALL.header.mobile / web(태그·설명·막대)
+  const K=WALL.header.web,M=WALL.header.mobile,G=K.tag,Sb=K.sub,Br=K.bar,PAD=24,m=cv(8,8).getContext('2d'),chars=[...ch.title];
+  const colAt=ts=>chars.reduce((h,c)=>h+(c===' '?ts*0.45:ts*1.04),0);   // 글자 크기 ts일 때 세로 줄 높이
+  const TS=M.fitH?M.fitH/colAt(1):M.size,step=TS*1.04,colH=colAt(TS);
+  font(m,400,G.size,'type');spacing(m,G.letter||0);const gw=m.measureText(`[${ch.tag}]`).width;
+  font(m,Sb.weight,Sb.size,'sans');spacing(m,Sb.letter||0);const subs=split2(m,ch.sub,1),sw=Math.max(...subs.map(l=>m.measureText(l).width));
+  const tx=PAD+Br.width+Br.gap,colX=tx+Math.max(gw,sw)+70,W=Math.ceil(colX+TS+PAD),H=Math.ceil(colH+PAD*2),c=cv(W,H),x=c.getContext('2d');
+  x.fillStyle=Br.color;x.fillRect(PAD,PAD,Br.width,colH);
+  x.fillStyle=K.title.color;font(x,M.weight,TS,M.font);x.textAlign='center';x.textBaseline='top';let y=PAD;
+  const sk=(K.title.stroke||0)/K.title.size*TS;x.strokeStyle=K.title.color;x.lineWidth=sk;x.lineJoin='round';   // 테두리: 웹 제목과 같은 비율(글자 크기 대비)
+  chars.forEach(cc=>{if(cc===' '){y+=TS*0.45;return;}x.fillText(cc,colX+TS/2,y);if(sk)x.strokeText(cc,colX+TS/2,y);y+=step;});
+  x.textAlign='left';x.textBaseline='alphabetic';
+  const SL=Sb.size*1.5,sY0=PAD+colH-(subs.length-1)*SL-Sb.size*0.25;   // 설명 마지막 줄 = 막대 아래끝
+  x.fillStyle=Sb.color;font(x,Sb.weight,Sb.size,'sans');spacing(x,Sb.letter||0);subs.forEach((l,i)=>x.fillText(l,tx,sY0+i*SL));
+  const t=cv(W,H),tc=t.getContext('2d');tc.fillStyle=G.color;font(tc,400,G.size,'type');spacing(tc,G.letter||0);tc.fillText(`[${ch.tag}]`,tx,sY0-Sb.size*0.9-G.gap);
+  wearNoise(tc,W,H,G.noise,G.size/14);x.drawImage(t,0,0);
+  return c;}
+function headerCanvas(ch){   // 모바일: 단독 패널 — 값은 위쪽 WALL.header에서 고칩니다
+  const S=WALL.header,No=S.no,Br=S.bar,T=S.title,Sb=S.sub,m=cv(8,8).getContext('2d'),PAD=24;
+  font(m,No.weight,No.size,No.font);const nw=m.measureText(ch.no).width;
+  font(m,T.weight,T.size,T.font);const tw0=m.measureText(ch.title).width;
+  font(m,Sb.weight,Sb.size,Sb.font);const lines=split2(m,ch.sub,Sb.maxWidth),sw=Math.max(...lines.map(l=>m.measureText(l).width));
+  const tx=PAD+nw+Br.gap+Br.width+T.gap,top=PAD,tY=top+T.size*0.82,last=tY+Sb.top+(lines.length-1)*Sb.lineGap,bot=last+Sb.size*0.28;
+  const W=Math.ceil(tx+Math.max(tw0,sw)+PAD),H=Math.ceil(bot+PAD),c=cv(W,H),x=c.getContext('2d');
+  x.fillStyle=No.color;font(x,No.weight,No.size,No.font);x.fillText(ch.no,PAD,(top+bot)/2+No.size*0.36);   // 번호: 글 묶음 세로 가운데
+  x.fillStyle=Br.color;x.fillRect(PAD+nw+Br.gap,top,Br.width,bot-top);
+  x.fillStyle=T.color;font(x,T.weight,T.size,T.font);x.fillText(ch.title,tx,tY);
+  x.fillStyle=Sb.color;font(x,Sb.weight,Sb.size,Sb.font);lines.forEach((l,i)=>x.fillText(l,tx,tY+Sb.top+i*Sb.lineGap));
+  return c;
+}
+const PHOTO_INSET={size:0.035,opacity:0.45};   // 사진 안쪽 그림자: 크기(사진 짧은 변 대비) · 진하기
+function photoCanvas(p,w,h,label){
+  const L=p.img?1400:800,W=w>=h?L:Math.round(L*w/h),H=w>=h?Math.round(L*h/w):L,c=cv(W,H),x=c.getContext('2d');
+  drawCover(x,p.img||IMG.ph,0,0,W,H);
+  { // 액자 안에 끼운 듯한 안쪽 그림자 (위쪽이 조금 더 진하게)
+    const IS=PHOTO_INSET,m=Math.min(W,H),b=m*IS.size;x.save();x.beginPath();x.rect(0,0,W,H);x.clip();
+    x.shadowColor='rgba(0,0,0,'+IS.opacity+')';x.shadowBlur=b;x.shadowOffsetY=b*0.35;
+    x.beginPath();x.rect(-W,-H,W*3,H*3);x.rect(0,0,W,H);x.fillStyle='#000';x.fill('evenodd');x.restore(); }
+  if(!p.img){x.fillStyle='rgba(26,26,26,.72)';font(x,500,24,'sans');const t=label||'사진 준비 중',tw=x.measureText(t).width;
+    x.fillRect(22,H-62,tw+28,40);x.fillStyle=COL.wall;x.fillText(t,36,H-33);}
+  return c;
+}
+function tagCanvas(p){   // 모바일: 사진 밑 지명 (박스 없이 벽에 바로)
+  const S=WALL.tag,H=96,f=S.size,m=cv(8,8).getContext('2d');font(m,S.weight,f,S.font);const W=Math.ceil(m.measureText(p.name).width)+64;   // 값은 WALL.tag
+  const c=cv(W,H),x=c.getContext('2d');x.fillStyle=S.color;font(x,S.weight,f,S.font);x.textAlign='center';x.fillText(p.name,W/2,H/2+f*0.36);return c;}
+function cardCanvas(p){
+  const S=WALL.card,Nm=S.name,Bt=S.button,D=S.desc;   // 값은 위쪽 WALL.card에서 고칩니다
+  const W=688,m=cv(8,8).getContext('2d');font(m,D.weight,D.size,D.font);
+  const t0=firstSentence(p.then);let lines=p.cap?p.cap.split('\n'):D.chars?(t0.match(new RegExp('.{1,'+D.chars+'}','g'))||[]).map(l=>l.trim()):wrap(m,t0,W-64);   // cap(장소별로 직접 나눈 줄, \n = 줄바꿈)이 있으면 그대로, 없으면 chars 글자 수마다if(lines.length>D.maxLines){lines=lines.slice(0,D.maxLines);lines[D.maxLines-1]=lines[D.maxLines-1].replace(/.{2}$/,'…');}
+  const H=D.y+(lines.length-1)*D.lineGap+D.bottom,c=cv(W,H),x=c.getContext('2d');   // 박스 높이 = 설명 줄 수에 맞춤 (아래 여백 D.bottom)
+  x.fillStyle=Nm.color;let fs=Nm.size;font(x,Nm.weight,fs,Nm.font);while(x.measureText(p.name).width>W-260&&fs>Nm.minSize){fs-=2;font(x,Nm.weight,fs,Nm.font);}
+  x.fillText(p.name,Nm.x,Nm.y);const tw=x.measureText(p.name).width;
+  x.fillStyle=Bt.color;font(x,Bt.weight,Bt.size,Bt.font);const pl=Bt.text,pw=x.measureText(pl).width+22;
+  x.strokeStyle=Bt.color;x.lineWidth=2;roundRect(x,Nm.x+tw+16,38,pw,36,4);x.stroke();x.fillText(pl,Nm.x+tw+27,63);
+  x.fillStyle=D.color;font(x,D.weight,D.size,D.font);
+  drawLines(x,lines,Nm.x,D.y,D.lineGap);
+  return c;
+}
+function endingCanvas(){
+  const W=2048,H=1024,c=cv(W,H),x=c.getContext('2d');paper(x,W,H);
+  x.fillStyle=COL.accent;font(x,700,80,'serif');x.fillText(END_TITLE,100,210);
+  x.fillStyle=COL.ink;font(x,500,32,'serif');let y=drawLines(x,END_P[0].split('\n'),100,300,50);drawLines(x,END_P[1].split('\n'),100,y+28,50);
+  // 지도
+  const mx=1010,my=120,lon0=129.006,lon1=129.084,lat0=35.090,lat1=35.130,s=15000;
+  const mw=(lon1-lon0)*0.819*s,mh=(lat1-lat0)*s;
+  const px=g=>mx+(g[1]-lon0)*0.819*s, py=g=>my+(lat1-g[0])*s;
+  x.fillStyle='rgba(255,255,255,.6)';x.fillRect(mx,my,mw,mh);
+  x.strokeStyle='rgba(140,140,140,.25)';x.lineWidth=1;for(let i=0;i<=mw;i+=60){x.beginPath();x.moveTo(mx+i,my);x.lineTo(mx+i,my+mh);x.stroke();}
+  for(let j=0;j<=mh;j+=60){x.beginPath();x.moveTo(mx,my+j);x.lineTo(mx+mw,my+j);x.stroke();}
+  x.strokeStyle=COL.ink;x.lineWidth=2;x.strokeRect(mx,my,mw,mh);
+  const pts=[];CHAPTERS.forEach((ch,ci)=>ch.places.filter(p=>p.geo).forEach((p,pi)=>pts.push({p,ci,pi,X:px(p.geo),Y:py(p.geo)})));
+  x.strokeStyle=COL.accent;x.lineWidth=2.5;x.setLineDash([10,9]);x.beginPath();pts.forEach((t,i)=>i?x.lineTo(t.X,t.Y):x.moveTo(t.X,t.Y));x.stroke();x.setLineDash([]);
+  pts.forEach((t,i)=>{x.fillStyle=COL.accent;x.beginPath();x.arc(t.X,t.Y,19,0,7);x.fill();x.strokeStyle=COL.wall;x.lineWidth=3;x.stroke();
+    x.fillStyle=COL.wall;font(x,600,19,'num');x.textAlign='center';x.fillText(i+1,t.X,t.Y+7);x.textAlign='left';});
+  x.fillStyle=COL.ink;font(x,600,22,'num');x.fillText('N ↑',mx+mw-62,my+40);
+  x.fillStyle=COL.gray;font(x,400,20,'sans');x.fillText('개략 위치도 · 장소 확정 후 정식 지도로 교체',mx,my+mh+36);
+  // 범례
+  let lx=100,ly=600,col=0;
+  pts.forEach((t,i)=>{if(t.ci===2&&t.pi===0){lx=560;ly=600;}
+    if(t.pi===0){x.fillStyle=COL.accent;font(x,600,22,'num');x.fillText(CHAPTERS[t.ci].no,lx,ly);font(x,700,22,'sans');x.fillText(CHAPTERS[t.ci].title,lx+40,ly);ly+=40;}
+    x.fillStyle=COL.accent;x.beginPath();x.arc(lx+12,ly-8,13,0,7);x.fill();x.fillStyle=COL.wall;font(x,600,15,'num');x.textAlign='center';x.fillText(i+1,lx+12,ly-3);x.textAlign='left';
+    x.fillStyle=COL.ink;font(x,400,23,'sans');x.fillText(t.p.name,lx+36,ly);ly+=38;});
+  return c;
+}
+function aoCanvas(endFade){ // 벽 밑 그림자: 벽에서 멀어질수록, 양 끝으로 갈수록 부드럽게 사라짐
+  const W=256,H=64,c=cv(W,H),x=c.getContext('2d'),g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,0,0,0.32)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
+  const f=Math.max(2,Math.round(W*endFade));x.globalCompositeOperation='destination-in';const h=x.createLinearGradient(0,0,W,0);
+  h.addColorStop(0,'rgba(0,0,0,0)');h.addColorStop(f/W,'rgba(0,0,0,1)');h.addColorStop(1-f/W,'rgba(0,0,0,1)');h.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=h;x.fillRect(0,0,W,H);return c;}
+function radialCanvas(){const c=cv(256,256),x=c.getContext('2d'),g=x.createRadialGradient(128,96,0,128,128,128);
+  g.addColorStop(0,'rgba(255,250,240,0.45)');g.addColorStop(1,'rgba(255,250,240,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return c;}
+function shadowCanvas(){const c=cv(128,128),x=c.getContext('2d');x.shadowColor='rgba(26,26,26,0.6)';x.shadowBlur=14;x.shadowOffsetX=1000;x.fillStyle='#000';x.fillRect(22-1000,22,84,84);return c;}
+
+/* ───────────────────────── 장면 ───────────────────────── */
+const canvas=$('#gl');
+let renderer;
+try{renderer=new T.WebGLRenderer({canvas,antialias:true});}catch(e){lMsg.textContent='이 기기에서는 3D 화면(WebGL)을 표시할 수 없습니다.';return;}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputEncoding=T.sRGBEncoding;
+const scene=new T.Scene();
+scene.background=new T.Color('#BDBDBD');
+scene.fog=new T.Fog('#BDBDBD',34,80);
+const fovFor=()=>innerWidth/innerHeight<0.8?64:52;
+let FOV=fovFor();
+const camera=new T.PerspectiveCamera(FOV,innerWidth/innerHeight,0.05,120);
+const ANISO=renderer.capabilities.getMaxAnisotropy();
+function tex(src,rep){const t=src instanceof HTMLCanvasElement?new T.CanvasTexture(src):new T.Texture(src);t.needsUpdate=true;t.encoding=T.sRGBEncoding;t.anisotropy=ANISO;
+  if(rep){t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}return t;}
+const V=(x,y,z)=>new T.Vector3(x,y,z);
+
+scene.add(new T.AmbientLight('#ffffff',0.72));
+scene.add(new T.HemisphereLight('#ffffff','#9a8f80',0.22));
+const d1=new T.DirectionalLight('#fffaf2',0.30);d1.position.set(4,10,6);scene.add(d1);
+const d2=new T.DirectionalLight('#f6f6f6',0.20);d2.position.set(-4,8,-6);scene.add(d2);
+
+const clickables=[];
+const BLOCK_H=6.6,WALL_H=BLOCK_H;   // 입구 블록·복도 높이 / 전시실 벽(천장) 높이 — 메인·인트로와 같은 높이
+const PS=1.2;   // 전시실 안 사진·설명 카드·장 제목 크기 배율. 벽 길이 때문에 이보다 키우면 옆 사진이 화면에 같이 보임
+const FS=1.25;  // 액자·사진 설명만 추가로 키우는 배율 (사진 칸 간격은 그대로 → 웹 벽 전체 화면에서 사진이 더 크게 보임)
+const CLOSE=0.72;   // 웹에서 사진 하나를 볼 때 화면에 담는 높이 비율 (작을수록 액자·설명이 크게 보임)
+const wallSrc=IMG.wall||(()=>{const c=cv(8,8);const g=c.getContext('2d');g.fillStyle=COL.wall;g.fillRect(0,0,8,8);return c;})();
+function wallBox(x0,x1,z0,z1,h,src){
+  const w=x1-x0,d=z1-z0;
+  const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshLambertMaterial({map:tex(src||wallSrc,[Math.max(w,d)/2.2,h/2.2]),color:'#EEECE8'}));   // 바닥 톤에 맞춘 아주 옅은 회백색
+  m.position.set((x0+x1)/2,h/2,(z0+z1)/2);scene.add(m);return m;
+}
+// 평면도 500px → 25m (1px = 0.05m), 중심 (250,250) = 원점
+// 전시실 안쪽: x -11~11, z -11~6.35 / 01장 블록 바깥(복도 쪽)에 Main·Intro / 오른쪽 끝 통로(x 7.15~11)로 입장
+const ENT={x0:7.15,x1:11,cx:9.075,zIn:6.35,zOut:7.85};   // 전시실 입구 통로
+const RM={xL:-17,xR:11,zB:-17,zF:6.35};   // 전시실 안쪽 범위(m): 왼쪽·오른쪽 x, 안쪽·입구 쪽 z — 입구는 그대로 두고 왼쪽·안쪽으로 넓힘
+wallBox(RM.xL-1.5,RM.xR+1.5,RM.zB-1.5,RM.zB,WALL_H);   // Chapter 03 (안쪽 벽)
+wallBox(RM.xL-1.5,RM.xL,RM.zB,RM.zF,WALL_H);           // Chapter 02 (왼쪽 벽)
+wallBox(RM.xR,RM.xR+1.5,RM.zB,RM.zF,WALL_H);           // Chapter 04 (오른쪽 벽)
+wallBox(11,12.9,6.35,19.5,BLOCK_H);             // 입구 오른쪽 벽: 복도 맞은편 벽까지 끊김 없이 이어서 인트로 화면에서 끝이 보이지 않게
+// 01장 블록: 안쪽 면 = Chapter 01, 복도 쪽 면 = Main·Intro 패널 뒤 벽(살짝 톤다운)
+function toneBack(m){const base=m.material,back=base.clone();back.color=new T.Color('#D3D0CA');m.material=[base,base,base,base,back,base];}
+wallBox(RM.xL-1.5,ENT.x0,6.35,7.85,BLOCK_H);   // 안쪽 면 = Chapter 01, 복도 쪽 면 = 메인·인트로 글이 바로 쓰인 벽
+// 입구 위 벽 (전시실 천장 높이 위쪽을 막음, 패널 뒤 벽과 같은 톤)
+(BLOCK_H>WALL_H?[[ENT.zIn,ENT.zIn+0.3]]:[]).forEach(   /* 복도 쪽 입구 위 벽은 없앰 → 입구가 복도 천장 높이까지 트임 (전시실 쪽 천장 턱만 남김) */
+([z0,z1])=>{const lin=wallBox(ENT.x0,ENT.x1,z0,z1,BLOCK_H-WALL_H);lin.position.y=(WALL_H+BLOCK_H)/2;lin.material=lin.material.clone();lin.material.color=new T.Color('#D3D0CA');});
+// 전시장 입구: 복도(메인·인트로)에서는 안쪽이 흐리게만 보이도록 막음 (복도 쪽에서만 보이는 면)
+const doorVeil=new T.Mesh(new T.PlaneGeometry(ENT.x1-ENT.x0,BLOCK_H),new T.MeshBasicMaterial({color:'#4a4a4a',fog:false}));doorVeil.position.set(ENT.cx,BLOCK_H/2,ENT.zOut+0.01);
+const ENT_VEIL=false;   /* false: 입구 너머로 전시실 안이 그대로 보임 / true: 예전처럼 흐린 사진으로 가림 */
+if(ENT_VEIL)scene.add(doorVeil);
+// 입구 복도 (평면도 아래쪽 동선)
+const HALL_L=-75;   // 복도 왼쪽 끝 x(m): 메인 왼쪽을 벽으로 막지 않고 안개 속으로 길게 이어지게 (안개는 34m부터 짙어짐)
+wallBox(HALL_L,12.9,19.5,19.9,BLOCK_H);          // 복도 맞은편 벽
+wallBox(HALL_L,RM.xL-1.5,6.35,7.85,BLOCK_H);    // 메인 벽을 왼쪽으로 이어 붙인 복도 벽
+wallBox(12.5,12.9,6.35,19.9,BLOCK_H);
+
+const floorTex=IMG.floor?tex(IMG.floor,[180/4.2,60/4.2]):null;   // 연마한 돌(콘크리트) 바닥, 4.2m마다 반복
+const floor=new T.Mesh(new T.PlaneGeometry(180,60),new T.MeshPhongMaterial(Object.assign({specular:new T.Color('#2a2a2a'),shininess:38},floorTex?{map:floorTex,color:'#ffffff'}:{color:'#B0AAA1'})));
+floor.rotation.x=-Math.PI/2;floor.position.x=-60;scene.add(floor);   // 바닥: x -150~30 (왼쪽 복도까지)
+// 천장: 참고 이미지처럼 어두운 노출 콘크리트 (얼룩·거푸집 이음선·미세 기공)
+function concreteCv(){   /* 이음매 없이 반복되는(주기) 잡음으로 만든 노출 콘크리트 */
+  const S=512,c=cv(S,S),x=c.getContext('2d'),R=rnd(41),im=x.createImageData(S,S),d=im.data;
+  const grid=n=>{const g=new Float32Array(n*n);for(let i=0;i<g.length;i++)g[i]=R();return g;};
+  const oct=[[4,.42],[9,.26],[22,.17],[64,.10],[160,.05]].map(([n,a])=>({n,a,g:grid(n)}));
+  const sm=t=>t*t*(3-2*t);
+  for(let y=0;y<S;y++)for(let X=0;X<S;X++){let v=0;
+    for(const o of oct){const fx=X/S*o.n,fy=y/S*o.n,x0=Math.floor(fx),y0=Math.floor(fy),tx=sm(fx-x0),ty=sm(fy-y0),n=o.n,
+      a=o.g[(y0%n)*n+x0%n],b=o.g[(y0%n)*n+(x0+1)%n],cc=o.g[((y0+1)%n)*n+x0%n],dd=o.g[((y0+1)%n)*n+(x0+1)%n];
+      v+=o.a*((a*(1-tx)+b*tx)*(1-ty)+(cc*(1-tx)+dd*tx)*ty);}
+    const k=(v-.5)*34+(R()-.5)*7,i=(y*S+X)*4;d[i]=172+k;d[i+1]=168+k;d[i+2]=162+k*.95;   /* 이전보다 절반 정도 연하게 */d[i+3]=255;}
+  x.putImageData(im,0,0);
+  for(let i=0;i<500;i++){const px=R()*S,py=R()*S,r=.4+R()*R()*1.6;x.fillStyle='rgba(90,85,80,'+(.25+R()*.4)+')';[[0,0],[S,0],[0,S],[-S,0],[0,-S]].forEach(([ox,oy])=>{x.beginPath();x.arc(px+ox,py+oy,r,0,7);x.fill();});}
+  return c;}
+const ceilCv=concreteCv();
+const CEIL_LIGHT=0.5;   /* 천장 밝기: 0이면 바닥과 같은 색, 1이면 흰색 */
+const ceilImg=IMG.floor?(()=>{const f=IMG.floor,c=cv(f.width,f.height),x=c.getContext('2d');x.drawImage(f,0,0);
+  x.fillStyle='#FFFFFF';x.globalAlpha=CEIL_LIGHT;x.fillRect(0,0,c.width,c.height);return c;})():null;
+const ceilMat=(w,h)=>new T.MeshLambertMaterial({map:ceilImg?tex(ceilImg,[w/4.2,h/4.2]):tex(ceilCv,[w/3.2,h/3.2])});   /* 천장: 바닥과 같은 돌 재질을 더 연하게 (4.2m마다 반복) */
+const CW=RM.xR-RM.xL+3,CD=RM.zF-RM.zB+0.75;   // 전시실 천장 크기
+const ceil=new T.Mesh(new T.PlaneGeometry(CW,CD),ceilMat(CW,CD));
+ceil.rotation.x=Math.PI/2;ceil.position.set((RM.xL+RM.xR)/2,WALL_H,RM.zF-CD/2);scene.add(ceil);
+const stripM=new T.MeshBasicMaterial({color:'#FFFFFF'});
+const VW=12.9-HALL_L,vceil=new T.Mesh(new T.PlaneGeometry(VW,13.55),ceilMat(VW,13.55));vceil.rotation.x=Math.PI/2;vceil.position.set((12.9+HALL_L)/2,BLOCK_H,13.125);scene.add(vceil);
+{const L=12.3-HALL_L,s=new T.Mesh(new T.BoxGeometry(L,0.03,0.1),stripM);s.position.set(12.3-L/2,BLOCK_H-0.02,8.9);scene.add(s);}   // 복도 천장 조명줄도 왼쪽 끝까지
+[[(RM.xL+RM.xR)/2,RM.zB+1,RM.xR-RM.xL-2,0.12],[(RM.xL+0.6+6)/2,5.35,6-RM.xL-0.6,0.12]].forEach(([x,z,w,d])=>{const s=new T.Mesh(new T.BoxGeometry(w,0.03,d),stripM);s.position.set(x,WALL_H-0.02,z);scene.add(s);});
+[RM.xL+1,RM.xR-1].forEach(x=>{const s=new T.Mesh(new T.BoxGeometry(0.12,0.03,RM.zF-RM.zB-2.75),stripM);s.position.set(x,WALL_H-0.02,(RM.zB+RM.zF)/2-0.075);scene.add(s);});
+
+function faceDecor(cx,cz,n,len,skirt){
+  const rot=Math.atan2(n.x,n.z),L=len+0.9;   // 모서리 너머로 0.45m씩 늘여 끝을 부드럽게 흐림
+  const ao=new T.Mesh(new T.PlaneGeometry(L,0.7),new T.MeshBasicMaterial({map:tex(aoCanvas(0.6/L)),transparent:true,depthWrite:false}));
+  ao.rotation.set(-Math.PI/2,rot,0,'YXZ');ao.position.set(cx+n.x*0.35,0.003,cz+n.z*0.35);scene.add(ao);
+}
+faceDecor((RM.xL+RM.xR)/2,RM.zB,V(0,0,1),RM.xR-RM.xL);faceDecor(RM.xL,(RM.zB+RM.zF)/2,V(1,0,0),RM.zF-RM.zB);faceDecor(RM.xR,(RM.zB+RM.zF)/2,V(-1,0,0),RM.zF-RM.zB);
+faceDecor((RM.xL+ENT.x0)/2-0.45,6.35,V(0,0,-1),ENT.x0-RM.xL);faceDecor((HALL_L+ENT.x0)/2-0.45,7.85,V(0,0,1),ENT.x0-HALL_L);faceDecor(11,(ENT.zOut+19.5)/2,V(-1,0,0),19.5-ENT.zOut);   // 입구 쪽 모서리에서는 그림자가 입구로 튀어나가지 않게 0.45m 안으로
+
+
+const washT=tex(radialCanvas()),shadowT=tex(shadowCanvas());
+function unitGroup(px,pz,n){const g=new T.Group();g.position.set(px,0,pz);g.rotation.y=Math.atan2(n.x,n.z);scene.add(g);return g;}
+function wash(g,w,h,x,y,o){const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:washT,transparent:true,opacity:o??.5,blending:T.AdditiveBlending,depthWrite:false}));m.position.set(x,y,0.008);g.add(m);return m;}
+function plane(g,w,h,texture,x,y,z,opts){const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshLambertMaterial(Object.assign({map:texture},opts||{})));m.position.set(x,y,z);g.add(m);return m;}
+const ledgeT=tex((()=>{const c=cv(256,128),x=c.getContext('2d');x.shadowColor='rgba(26,26,26,1)';x.shadowBlur=26;x.shadowOffsetX=1000;x.fillStyle='#000';x.fillRect(40-1000,-40,176,52);return c;})());   // 위가 짙고 아래로 길게 흐려지는 띠
+function frameShadow(g,w,h,y){   // 액자 그림자: 위에서 내려오는 빛 → 액자 아래로 넓게 떨어지고 아래로 갈수록 옅어짐
+  const b=new T.Mesh(new T.PlaneGeometry(w*1.18,h*1.18),new T.MeshBasicMaterial({map:shadowT,transparent:true,opacity:FRAME_SHADOW*0.55,depthWrite:false}));b.position.set(0.01,y-0.09,0.0055);g.add(b);   // 아래로 내려 앉은 넓은 그림자
+  const a=new T.Mesh(new T.PlaneGeometry(w*1.08,0.5),new T.MeshBasicMaterial({map:ledgeT,transparent:true,opacity:FRAME_SHADOW*0.7,depthWrite:false}));a.position.set(0.01,y-h/2-0.2,0.006);g.add(a);   // 액자 바로 아래 아래로 퍼지는 그림자 (띠 위끝은 액자 뒤에 숨고 좌우 끝은 부드럽게 흐려짐)
+  return a;}
+const FRAME_SHADOW=0.85;   // 액자 그림자 진하기 (0~1)
+function dropShadow(g,w,h,x,y,z){const m=new T.Mesh(new T.PlaneGeometry(w*1.35,h*1.35),new T.MeshBasicMaterial({map:shadowT,transparent:true,opacity:.55,depthWrite:false}));m.position.set(x+0.04,y-0.05,z);g.add(m);return m;}
+
+/* ───────────────────────── 전시물 배치 + 동선(stop) ───────────────────────── */
+const stops=[];
+function addStop(s){s.i=stops.length;stops.push(s);return s;}
+function localToWorld(g,x,y){return V(x,y,0).applyMatrix4(g.matrixWorld);}
+
+// 입구 복도: Main(왼쪽 블록 바깥 면, 뒷벽 앞에 선 패널)과 Intro(오른쪽 블록 바깥 면)
+const mainCv=cv(MAIN_W,MAIN_H),mainCtx=mainCv.getContext('2d'),mainBaseCv=mainBase(),mainTex=tex(mainCv);
+let mainPanel=null,introPanel=null,introBlur=null,introK=0,mainBlur=null,mainK=0;
+const main={v:0,d:1,hover:false,ta:1};   // ta: 숫자 외 글자의 불투명도   // d: 화살표가 그려진 정도(0→1)
+// 호버: 화살표가 왼쪽에서 오른쪽으로 새로 그려짐 (선 → 화살촉)
+function drawCTA(x,d){ // '기억을 따라가기' — 호버하면 오른쪽으로 번진 모션 블러가 걷히며 제자리에 섬
+  const C=WALL.main.cta,b=(1-d)*(1-d)*26,A=x.globalAlpha;x.save();font(x,C.weight,C.size,C.font);x.fillStyle=C.color;
+  if(b>0.5){for(let i=7;i>=1;i--){x.globalAlpha=A*0.16*(8-i)/7;x.fillText(C.text,LOW_X+b*i/7,CTA_Y);}x.globalAlpha=A*(0.55+0.45*d);}
+  x.fillText(C.text,LOW_X+b*0.15,CTA_Y);x.restore();}
+let _ctaMid=0;function ctaMid(){if(!_ctaMid){const C=WALL.main.cta,m=cv(8,8).getContext('2d');font(m,C.weight,C.size,C.font);const t=m.measureText(C.text);_ctaMid=((t.actualBoundingBoxAscent||C.size*.75)-(t.actualBoundingBoxDescent||0))/2;}return _ctaMid;}   // 글자 잉크의 세로 가운데(바닥선 위 px) — 화살표를 여기에 맞춤
+let _ctaW=0;function ctaW(){if(!_ctaW){const C=WALL.main.cta,m=cv(8,8).getContext('2d');font(m,C.weight,C.size,C.font);_ctaW=m.measureText(C.text).width;}return _ctaW;}
+function drawArrow(x,d){
+  const R_=WALL.main.arrow,x0=LOW_X+ctaW()+R_.gap,L=R_.length,Y=CTA_Y-ctaMid(),lineK=Math.min(1,d/0.8),x1=x0+L*lineK,head=Math.max(0,(d-0.8)/0.2);
+  x.save();x.strokeStyle=R_.color;x.lineWidth=R_.width;x.lineCap='round';
+  if(lineK>0.005){x.beginPath();x.moveTo(x0,Y);x.lineTo(x1,Y);x.stroke();}
+  if(head>0){const hx=x0+L,hl=9*head;x.beginPath();x.moveTo(hx-hl,Y-6*head);x.lineTo(hx,Y);x.lineTo(hx-hl,Y+6*head);x.stroke();}
+  x.restore();}
+function redrawMain(){mainCtx.clearRect(0,0,MAIN_W,MAIN_H);mainCtx.drawImage(mainBaseCv,0,0);drawNumber(mainCtx,main.v);
+  if(main.ta>0){mainCtx.save();mainCtx.globalAlpha=main.ta;mainCtx.drawImage(mainTextCv,0,0);drawCTA(mainCtx,main.d);drawArrow(mainCtx,main.d);mainCtx.restore();}
+  mainTex.needsUpdate=true;}
+function drawMain(v){main.v=v;redrawMain();}
+drawMain(1023);
+/* 메인·인트로 벽의 가로 위치(m) — 카메라는 벽 위 글자 묶음의 한가운데를 바라봐서, 글자 배치를 바꿔도 화면 정가운데에 옵니다 (입구 왼쪽 끝 x=7.15) */
+const MAIN_X=-7.1, INTRO_X=3;
+{const n=V(0,0,1);
+ const gm=unitGroup(MAIN_X,7.85,n);const m=plane(gm,6.4,6.6,mainTex,0,BLOCK_H/2,0.004,{transparent:true});m.userData.main=true;wash(gm,7.4,6.6,0,BLOCK_H/2,.3);   // 벽 높이의 가운데   // 패널 없이 벽면에 바로 (6.4×5m)
+ mainPanel=m;
+ {const D=WALL.intro.dimAtMain,bc=cv(MAIN_W,MAIN_H),bx=bc.getContext('2d');bx.filter='blur('+D.blur+'px)';bx.drawImage(mainCv,0,0);   /* 인트로에서 볼 때 쓰는 흐린 메인 (인트로와 같은 흐림·진하기) */
+  mainBlur=plane(gm,6.4,6.6,tex(bc),0,BLOCK_H/2,0.0045,{transparent:true,opacity:0,depthWrite:false});}
+ const s0=addStop({type:'main',sec:'main',focus:{c:V(MAIN_X+(MAIN_BOX?((MAIN_BOX.l+MAIN_BOX.r)/2-MAIN_W/2)/200:0),BLOCK_H/2-(MAIN_BOX?((MAIN_BOX.t+MAIN_BOX.b)/2-MAIN_H/2)/200:0),7.85),n,w:6.6,h:6.4},oblique:T.MathUtils.degToRad(29),obliqueM:T.MathUtils.degToRad(29),fill:.75});m.userData.stop=s0.i;clickables.push(m);
+ const gi=unitGroup(INTRO_X,7.85,n);const introCv=introCanvas();const mi=plane(gi,6.0,6.6,tex(introCv),0,BLOCK_H/2,0.004,{transparent:true});
+ {const D=WALL.intro.dimAtMain,bc=cv(introCv.width,introCv.height),bx=bc.getContext('2d');bx.filter='blur('+D.blur+'px)';bx.drawImage(introCv,0,0);   /* 메인에서 볼 때 쓰는 흐린 인트로 */
+  introBlur=plane(gi,6.0,6.6,tex(bc),0,BLOCK_H/2,0.0045,{transparent:true,opacity:0,depthWrite:false});}wash(gi,6.8,6.6,0,BLOCK_H/2,.25);   // 메인과 2.3m 띄움 (6×5m)
+ introPanel=mi;
+ const s1=addStop({type:'intro',sec:'intro',focus:{c:V(INTRO_X+(INTRO_CX-600)/200,BLOCK_H/2,7.85),n,w:6.2,h:6.4},fill:.80});mi.userData.stop=s1.i;clickables.push(mi);
+}
+
+// 각 장의 벽: 사용 구간의 가운데 점 → 칸(장 제목 1칸 + 사진 칸)을 같은 간격으로. 관람 방향: 관람자 기준 오른쪽으로 진행
+const WALLS=[
+ {n:V(0,0,-1),c:[-5.9,6.35],                 web:{mid:[(RM.xL+ENT.x0)/2,6.35],sp:7.0,shift:-0.9}},   // Chapter 01 (입구 쪽 블록 안쪽 면)
+ {n:V(1,0,0), c:[RM.xL,(RM.zB+RM.zF)/2],sp:8.0,web:{mid:[RM.xL,(RM.zB+RM.zF)/2],sp:8.0,shift:0.6}},    // Chapter 02 (왼쪽 벽)
+ {n:V(0,0,1), c:[(RM.xL+RM.xR)/2,RM.zB],sp:7.0,web:{mid:[(RM.xL+RM.xR)/2,RM.zB],sp:7.0,shift:0}},    // Chapter 03 (안쪽 벽)
+ {n:V(-1,0,0),c:[RM.xR,(RM.zB+RM.zF)/2],       web:{mid:[RM.xR,(RM.zB+RM.zF)/2],sp:6.4,shift:0}}   // Chapter 04 (오른쪽 벽) → 입구로 나가며 Ending
+];
+/* c·sp: 모바일 배치 (장 제목 패널 + 사진) / web: 웹 배치 — mid: 벽 가운데 · sp: 사진 간격(m) · shift: 사진 묶음을 옮기는 양(m, +는 관람자 기준 오른쪽, -는 왼쪽) */
+const FACES=WALLS.map((w,wi)=>{const r=V(w.n.z,0,-w.n.x),N=CHAPTERS[wi].places.length,at=s=>[w.c[0]+r.x*s,w.c[1]+r.z*s];
+  if(!w.sp){const sp=4.9*PS;return {n:w.n,r,sp,pts:Array.from({length:N+1},(_,i)=>at((i-N/2)*sp))};}   // 장 제목 칸 + 사진 칸을 같은 간격으로
+  const s0=-(N-1)/2*w.sp;return {n:w.n,r,sp:w.sp,at,s0,pts:[null,...Array.from({length:N},(_,i)=>at(s0+i*w.sp))]};});   // 사진은 벽 가운데, 모바일 장 제목 자리는 패널 폭을 안 뒤 정함
+FACES.forEach((F,wi)=>{const W=WALLS[wi].web,N=CHAPTERS[wi].places.length;F.spD=W.sp;   // 웹: 사진만 벽 가운데(+shift)에 sp 간격으로
+  F.ptsD=Array.from({length:N},(_,i)=>{const s=W.shift+(i-(N-1)/2)*W.sp;return [W.mid[0]+F.r.x*s,W.mid[1]+F.r.z*s];});});
+const SPAN=Math.max(...FACES.map((F,i)=>(CHAPTERS[i].places.length-1)*F.spD))+3.4*PS*FS;   // 웹 벽 전체 화면의 폭 (가장 넓은 장 기준 → 장마다 같은 거리)
+const deskOnly=[],mobOnly=[];
+function fitTags(){   // 모바일: 사진마다 보는 거리가 달라도 지명 글자가 화면에서 같은 크기(WALL.tag.px)로 보이게
+  if(isWide())return;const tn=Math.tan(T.MathUtils.degToRad(FOV)/2);
+  stops.forEach(s=>{if(!s.tag)return;const c=camFor(s),d=c.pos.distanceTo(c.target),k=WALL.tag.px*2*d*tn/innerHeight/(s.tag.th*s.tag.sc);
+    s.tag.m.scale.setScalar(k);s.tag.m.position.y=s.tag.top-s.tag.th*k/2;});}
+function applyLayout(){const m=!isWide();deskOnly.forEach(o=>o.visible=!m);mobOnly.forEach(o=>o.visible=m);stops.forEach(s=>{if(s.g)s.g.position.copy(m?s.pM:s.pD);});}   // 사진은 웹·모바일 자리가 다름
+const MOB_FW=Math.max(...CHAPTERS.flatMap(c=>c.places.map(p=>1.7*(p.scale||1))))+0.275+0.2,MOB_FH=1.7+0.275+0.5;   // 모바일 사진 화면의 기준 폭·높이(m, 배율 전)
+CHAPTERS.forEach((ch,ci)=>{
+  const F=FACES[ci],n=F.n;ch.sec='ch'+ci;
+  { // 장 제목 — 모바일: 첫 칸에 단독 패널 / 웹: 사진 줄 위에 크게 걸고 벽 전체를 먼저 보여줌
+    const hc=vertHeaderCanvas(ch),ht=tex(hc),hw=hc.width/400,hh=hc.height/400,Y=1.68*FS;   // 모바일 장 제목: 세로쓰기(vertHeaderCanvas) · 가운데 높이 = 사진 화면 가운데
+    let tp=F.pts[0];
+    if(!tp){const p0=ch.places[0],a0=p0.img?p0.img.width/p0.img.height:1.5,fw0=(a0>=1?1.7:1.7*a0)+0.275;   // 첫 사진 액자 왼쪽 끝에서 0.6m 띄운 자리
+      const wallHalf=ci===2?(RM.xR-RM.xL)/2:(RM.zF-RM.zB)/2,viewHalf=MOB_FW*PS*FS/0.97/2+0.3;
+      tp=F.at(Math.max(F.s0-(0.65+fw0/2)*PS*FS-1.6-hw*PS/2,-wallHalf+viewHalf));}   // 모바일 사진 화면에 걸리지 않게 1.6m 띄우되, 벽 모서리가 화면에 보이지 않을 만큼은 안쪽에
+    const [x,z]=tp,g=unitGroup(x,z,n);g.scale.setScalar(PS);g.updateMatrixWorld();
+    mobOnly.push(wash(g,hw+1.6,4.2,0,2.2));
+    const hp=plane(g,hw,hh,ht,0,Y,0.006,{transparent:true});mobOnly.push(hp);
+    // 웹: 사진 칸들의 가운데 위에 (사진 액자 위끝 3.25m보다 위)
+    const P=F.ptsD,cx=P.reduce((a,q)=>a+q[0],0)/P.length,cz=P.reduce((a,q)=>a+q[1],0)/P.length,gw=unitGroup(cx,cz,n);gw.updateMatrixWorld();
+    const K=WALL.header.web,hcw=webHeaderCanvas(ch),u=PS*K.scale/400,dw=hcw.width*u,dh=hcw.height*u;
+    const p0=ch.places[0],a0=p0.img?p0.img.width/p0.img.height:1.5,fw0=(a0>=1?1.7:1.7*a0)+0.275;   // 첫 사진 액자 폭
+    const lx=-(P.length-1)/2*F.spD-(0.65+fw0/2)*PS*FS;   // 첫 사진 액자 왼쪽 끝 (사진 줄 가운데 기준)
+    const hd=plane(gw,dw,dh,tex(hcw),lx-hcw.padX*u+dw/2,K.y,0.006,{transparent:true});deskOnly.push(hd);   // 세로 막대 왼쪽 끝을 액자 왼쪽 끝에
+    const span=SPAN,top=K.y+dh/2,bot=0.75*PS*FS;   // 벽 전체: 사진이 가장 많은 장의 폭으로 통일(장마다 같은 거리) · 제목 위끝 ~ 설명 글 아래끝
+    const cs=addStop({type:'chapter',sec:ch.sec,ch,ci,overview:true,
+      focus:{c:localToWorld(gw,0,(top+bot)/2),n,w:span+1,h:top-bot+0.6},
+      focusM:{c:localToWorld(g,0,Y),n,w:MOB_FW*PS*FS,h:MOB_FH*PS*FS}});   // 모바일: 사진 화면과 같은 거리·확대
+    hp.userData.stop=cs.i;hd.userData.stop=cs.i;clickables.push(hp,hd);
+  }
+  ch.places.forEach((p,pi)=>{
+    const code=ch.no+'-'+(pi+1);p.code=code;
+    // 액자: 사진 원본 비율 그대로 (긴 변 1.7m), 흰 여백 2.5cm·검은 테두리 8cm를 상하좌우 같게
+    const ar=p.img?p.img.width/p.img.height:1.5,PL=1.7*(p.scale||1),   /* p.scale: 장소별 액자 크기 배율 (CHAPTERS에서 지정) */pw=ar>=1?PL:PL*ar,ph=ar>=1?PL/ar:PL,cy=1.72;
+    const off=q=>V(q[0]-F.r.x*0.65*PS*FS,0,q[1]-F.r.z*0.65*PS*FS),pD=off(F.ptsD[pi]),pM=off(F.pts[pi+1]);   // 칸 가운데에 액자+설명 묶음이 오도록 (웹·모바일 자리)
+    const g=unitGroup(pD.x,pD.z,n);g.scale.setScalar(PS*FS);g.updateMatrixWorld();
+    const fw=pw+0.275,fh=ph+0.275;
+    wash(g,4.4,4.2,0.6,2.2);
+    frameShadow(g,fw,fh,cy);
+    const fr=new T.Mesh(new T.BoxGeometry(fw,fh,0.05),new T.MeshBasicMaterial({color:new T.Color(COL.ink).convertSRGBToLinear()}));fr.position.set(0,cy,0.025);g.add(fr);
+    plane(g,pw+0.195,ph+0.195,null,0,cy,0.051,{color:COL.wall});   /* 흰 여백 넓게, 검은 테 얇게 */
+    const pc=photoCanvas(p,pw,ph);
+    const phM=plane(g,pw,ph,tex(pc),0,cy,0.052);
+    // 사진 설명: 카드 없이 벽에 바로 쓴 검정 글자 (액자 오른쪽, 마지막 줄 바닥선 = 액자 아래선)
+    const cc=cardCanvas(p),cw=1.2,chh=cw*cc.height/cc.width,cx=fw/2+0.14+cw/2,ccy=cy-fh/2-WALL.card.desc.bottom*cw/cc.width+chh/2;
+    const cardM=new T.Mesh(new T.PlaneGeometry(cw,chh),new T.MeshBasicMaterial({map:tex(cc),transparent:true}));cardM.position.set(cx,ccy,0.03);g.add(cardM);deskOnly.push(cardM);   // 조명 영향 없이 #8C8C8C 그대로
+    // 모바일: 지명만 담은 작은 박스를 사진 밑 가운데에 (이야기 보기는 사진을 눌러서)
+    const wM=fw+0.2;
+    // 모바일은 화면 폭에 맞춰 사진마다 보는 거리가 달라지므로, 거리에 비례해 박스 크기를 정해 화면 속 글자 크기를 똑같이 맞춤
+    const tc=tagCanvas(p),th=0.2,tw=th*tc.width/tc.height,ty=cy-fh/2-0.1-th/2;   /* 실제 크기는 fitTags()가 보는 거리에 맞춰 정함 */
+    const tagM=new T.Mesh(new T.PlaneGeometry(tw,th),new T.MeshBasicMaterial({map:tex(tc),transparent:true}));tagM.position.set(0,ty,0.03);g.add(tagM);mobOnly.push(tagM);
+    const focus={c:localToWorld(g,0.65,1.68),n,w:(fw+1.45)*PS*FS,h:Math.max(1.85,fh+0.5)*PS*FS};   // 웹: 모든 사진을 같은 높이·같은 거리에서 봄
+    g.position.copy(pM);g.updateMatrixWorld();
+    const s=addStop({type:'place',sec:ch.sec,ch,ci,p,pi,g,pD,pM,focus,
+      focusM:{c:localToWorld(g,0,1.68),n,w:MOB_FW*PS*FS,h:MOB_FH*PS*FS}});   // 모바일: 모든 사진을 같은 거리에서 봄 (가장 큰 액자 기준)
+    s.tag={m:tagM,top:cy-fh/2-0.1,th,sc:PS*FS};
+    phM.userData.stop=s.i;cardM.userData.stop=s.i;cardM.userData.card=true;tagM.userData.stop=s.i;tagM.userData.card=true;clickables.push(phM,cardM,tagM);
+  });
+});
+// Ending: 벽이 아니라, 입구를 나서며 바뀐 흰 화면 위에 띄움
+addStop({type:'ending',sec:'ending',cam:{pos:V(ENT.cx,1.68,13.2),target:V(ENT.cx,1.68,30)}});
+
+/* ───────────────────────── 카메라 배치 계산 ───────────────────────── */
+const hero=$('#hero'),mnav=$('#mnav');
+const isWide=()=>innerWidth>=760;
+function viewRect(s){
+  const W=innerWidth,H=innerHeight,top=isWide()?76:66,bot=isWide()?28:mnav.offsetHeight+10;
+  return {x:0,y:top,w:W,h:Math.max(160,H-top-bot)};
+}
+const tmpM=new T.Matrix4(),UP=V(0,1,0);
+function quatLook(pos,target){tmpM.lookAt(pos,target,UP);return new T.Quaternion().setFromRotationMatrix(tmpM);}
+function camFor(s){
+  const W=innerWidth,H=innerHeight,r=viewRect(s),tn=Math.tan(T.MathUtils.degToRad(FOV)/2);
+  let pos,target;
+  if(s.cam){pos=s.cam.pos.clone();target=s.cam.target.clone();}
+  else{
+    const mob=innerWidth<760,f=(mob&&s.focusM)||s.focus,level=s.type==='place'||s.type==='chapter'||s.type==='ending',fill=mob&&s.fill?(s.oblique?0.96:0.98):s.fill||(level?.66:.88);   // 모바일: 화면 폭을 거의 채울 만큼 가까이
+    let d=Math.max(f.h/r.h,f.w/r.w)*H/(2*tn*fill);
+    if(level){ // 작품 높이에서 정면으로 보되, 화면 아래쪽에 바닥이 살짝 걸릴 만큼 물러섬
+      const wp=s.type==='place'&&!mob,Hw=Math.max(f.h/(wp?0.95:0.86),2*(f.c.y+0.1)*(wp?CLOSE:1));d=Math.max(Hw/r.h,(f.w/(mob?0.97:s.overview?0.92:0.8))/r.w)*H/(2*tn);}if(s.type==='place'&&!mob&&s.p.zoom)d/=s.p.zoom;d=T.MathUtils.clamp(d,1.3,(s.type==='main'||s.type==='intro')?11:s.overview&&!mob?20:9.5*PS);   // 웹 장 개관: 벽 전체가 보이게 더 멀리   // 웹 사진은 CLOSE만큼 더 가까이   // 웹 벽 전체 화면은 사진 줄에 조금 더 꽉 차게 (0.92)
+    const ob=s.oblique?(mob?(s.obliqueM??s.oblique*0.55):s.oblique):0,dir=ob?V(-Math.sin(ob),0,Math.cos(ob)):f.n;   // 모바일: 패널 양옆 여백만 살짝 넘칠 만큼 크게, 비스듬한 각도는 조금 줄임   // 메인은 왼쪽 앞에서 비스듬히
+    target=f.c.clone();pos=f.c.clone().addScaledVector(dir,d);
+    if(s.type==='main'){const v=WALL.main.viewShift||0;target.x+=v;pos.x+=v;}
+    pos.y=(level||s.type==='main'||s.type==='intro')?f.c.y:T.MathUtils.clamp(f.c.y-0.18-d*0.02,1.35,1.75);   // 메인·인트로도 벽 가운데 높이에서 수평으로 봄   // 전시실 안: 작품과 같은 높이에서 정면으로
+  }
+  const mid=s.type==='main'||s.type==='intro';   // 메인·인트로: 웹·모바일 모두 화면 정가운데에
+  return {pos,target,q:quatLook(pos,target),dx:mid?0:r.x+r.w/2-W/2,dy:mid?0:r.y+r.h/2-H/2};
+}
+function applyOffset(dx,dy){const W=innerWidth,H=innerHeight;camera.setViewOffset(W,H,-dx,-dy,W,H);}
+
+/* ───────────────────────── 이동(트윈) ───────────────────────── */
+let cur=0,tw=null;
+const state={pos:V(0,0,0),q:new T.Quaternion(),dx:0,dy:0};
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const inRoom=p=>p.z<ENT.zOut;
+const DOOR=[V(0,1.68,2.6),V(0,1.68,6.3),V(0,1.68,10.0)];  // 전시실 ↔ 입구 복도 (두 블록 사이 통로)
+let yaw=0,pitch=0,yawT=0,pitchT=0;
+function goTo(i,instant){
+  i=T.MathUtils.clamp(i,0,stops.length-1);
+  if(i===cur&&!instant&&stops[i].type==='ending')return;   // 엔딩 흰 화면 유지
+  const prev=cur;cur=i;const s=stops[i];
+  updateUI(s);
+  const to=camFor(s);
+  if(instant){state.pos.copy(to.pos);state.q.copy(to.q);state.dx=to.dx;state.dy=to.dy;tw=null;return;}
+  const from={pos:state.pos.clone(),q:state.q.clone(),dx:state.dx,dy:state.dy};
+  let curve=null;
+  let path=null;
+  if(inRoom(from.pos)!==inRoom(to.pos)){
+    // 복도 ↔ 전시실: ① 입구 앞까지 일직선 → ② 입구를 지나 안쪽으로 일직선 → ③ 작품 앞으로
+    /* 들어갈 때: 지금 높이·거리 그대로 입구 앞까지 옆으로 이동 → 정면(수평 시선)으로 곧장 안으로 (아래로 내려다보지 않음)
+       나올 때: 그 반대 순서 */
+    const outside=inRoom(from.pos)?to.pos:from.pos,inRm=inRoom(from.pos)?from.pos:to.pos;
+    const front=V(ENT.cx,outside.y,outside.z),inside=V(ENT.cx,inRm.y,3.0);
+    const qIn=quatLook(front,V(ENT.cx,front.y,-10)),qOut=quatLook(inside,V(ENT.cx,inside.y,20));
+    path=inRoom(from.pos)
+      ?{out:true,pts:[from.pos,from.pos,inside,front,to.pos],qs:[from.q,from.q,qOut,qOut,to.q],at:[0,.1,.22,.62,1]}
+      :{pts:[from.pos,front,inside,to.pos,to.pos],qs:[from.q,qIn,qIn,to.q,to.q],at:[0,.3,.74,.86,1]};
+    if(s.type==='ending')path.toEnd=true;
+    if(stops[prev]&&stops[prev].type==='ending')path.fromEnd=true;
+  }
+  const dist=from.pos.distanceTo(to.pos);
+  const ang=from.q.angleTo(to.q);
+  const dur=reduced?250:path?4600:Math.min(4200,900+dist*120+ang*320);
+  tw={t0:performance.now(),dur,from,to,curve,path,fromEnd:!path&&stops[prev]&&stops[prev].type==='ending'&&prev!==i};
+  showEnding(s.type==='ending',dur);
+  if(prev!==i){yawT=0;pitchT=0;if(s.type==='main'&&typeof startCount==='function')startCount(Math.min(dur,1800));}
+}
+/* ───────────────────────── 엔딩 화면 ───────────────────────── */
+const endScreen=$('#endScreen');
+$('#endIn').innerHTML=`<div><p class="end-yrs">1950 – 1953, 피란수도 부산</p><h2 id="endTitle">${esc(END_TITLE)}</h2>
+  ${END_P.map(t=>`<p class="end-p">${esc(t)}</p>`).join('')}
+  <button class="end-cta" id="endTop">처음으로 돌아가기<svg viewBox="0 0 112 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="ln" pathLength="1" d="M1 7H111"/><path class="hd" d="M102 1l9 6-9 6"/></svg></button></div>`;
+$('#endTop').onclick=()=>{stopTour();goTo(0);};
+function endArrowY(){   // '처음으로 돌아가기' 화살표를 글자 잉크의 세로 가운데에 (svg 아래끝이 바닥선 → 잉크 가운데만큼 올리고 svg 높이 절반만큼 내림)
+  const b=$('#endTop'),sv=b.querySelector('svg'),x=cv(8,8).getContext('2d');x.font=getComputedStyle(b).font;const t=x.measureText('처음으로 돌아가기');
+  const mid=((t.actualBoundingBoxAscent||0)-(t.actualBoundingBoxDescent||0))/2;b.style.setProperty('--ay',(sv.getBoundingClientRect().height/2-mid).toFixed(1)+'px');}
+endArrowY();addEventListener('resize',endArrowY);
+function showEnding(on,dur){
+  endScreen.style.setProperty('--d',on?Math.round((dur||0)*0.3)+'ms':'0s');
+  endScreen.classList.toggle('on',on);endScreen.setAttribute('aria-hidden',on?'false':'true');
+}
+const step=dir=>{if(!$('#sheet').hidden||!$('#menu').hidden)return;if(cur+dir<0||cur+dir>stops.length-1)return;/* 처음·끝(엔딩)에서는 더 넘겨도 화면 그대로 */try{goTo(cur+dir);}catch(err){console.error(err);}};
+
+/* ───────────────────────── UI ───────────────────────── */
+const pCount=$('#pCount');
+function updateUI(s){
+  hero.classList.toggle('off',s.type!=='main');$('#brand').classList.toggle('off',s.type!=='main');
+  if(s.type==='place'){pCount.innerHTML=`<b>${pad(s.pi+1)}</b> / ${pad(s.ch.places.length)}`;
+    pCount.setAttribute('aria-label',`${s.ch.no}장 ${s.ch.title}, ${s.ch.places.length}점 중 ${s.pi+1}번째 ${s.p.name}`);}
+  else if(s.type==='chapter'){pCount.innerHTML=`E<b>${s.ch.no}</b>`;   /* EPISODE 01 → E01 (태그 [E01. Arrive]와 같은 표기) */pCount.setAttribute('aria-label',`${s.ch.no}장 ${s.ch.title}`);}
+  else{const t={main:'1023',intro:'INTRO',ending:'ENDING'}[s.type];pCount.textContent=t;pCount.removeAttribute('aria-label');}
+  $('#prevBtn').disabled=s.i===0;$('#nextBtn').disabled=s.i===stops.length-1;
+  if(typeof markMenu==='function')markMenu();
+  if(s.type==='intro') showHint();
+}
+$('#prevBtn').onclick=()=>{stopTour();step(-1);};$('#nextBtn').onclick=()=>{stopTour();step(1);};
+
+let hinted=false;
+function showHint(){if(hinted)return;hinted=true;const h=$('#hint');if(!isWide())h.textContent='스와이프로 다음 작품, 사진을 누르면 이야기를 볼 수 있어요';h.classList.remove('off');setTimeout(()=>h.classList.add('off'),4200);}
+
+// 메뉴: 전체 구성 + 현재 위치 강조
+const CHEV='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l5 5 5-5"/></svg>';
+const mlist=$('#mlist');
+function simpleRow(label,type){const li=document.createElement('li');
+  li.innerHTML=`<div class="mrow"><button class="mgo" data-stop="${stops.find(s=>s.type===type).i}">${label}</button><button class="mtog arrow" tabindex="-1" aria-hidden="true" data-stop="${stops.find(s=>s.type===type).i}">${CHEV}</button></div>`;
+  mlist.appendChild(li);}
+simpleRow('1023','main');simpleRow('Intro','intro');
+CHAPTERS.forEach((ch,ci)=>{
+  const li=document.createElement('li'),cs=stops.find(s=>s.type==='chapter'&&s.ci===ci);
+  li.innerHTML=`<div class="mrow"><button class="mgo" data-stop="${cs.i}"><span class="no">${ch.no}</span><span class="sep" aria-hidden="true"></span><span>${esc(ch.title)}</span></button>
+    <button class="mtog" aria-expanded="true" aria-controls="msub${ci}" aria-label="${esc(ch.title)} 장소 목록 접기">${CHEV}</button></div>
+    <ul class="msub" id="msub${ci}">${ch.places.map((p,pi)=>`<li><button data-stop="${stops.find(s=>s.type==='place'&&s.ci===ci&&s.pi===pi).i}">${esc(p.name)}</button></li>`).join('')}</ul>`;
+  mlist.appendChild(li);
+});
+simpleRow('Ending','ending');
+mlist.addEventListener('click',e=>{
+  const tg=e.target.closest('.mtog:not(.arrow)');
+  if(tg){const open=tg.getAttribute('aria-expanded')!=='true';tg.setAttribute('aria-expanded',open);$('#'+tg.getAttribute('aria-controls')).hidden=!open;
+    tg.setAttribute('aria-label',tg.getAttribute('aria-label').replace(open?'펼치기':'접기',open?'접기':'펼치기'));return;}
+  const b=e.target.closest('[data-stop]');if(b){closeMenu();goTo(+b.dataset.stop);}
+});
+function markMenu(){
+  const s=stops[cur];
+  mlist.querySelectorAll('[data-stop]').forEach(b=>{const on=+b.dataset.stop===s.i&&!(s.type==='place'&&b.classList.contains('mgo'));
+    b.classList.toggle('on',on);if(on&&!b.classList.contains('mtog'))b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
+  if(s.type==='place'){const head=mlist.querySelector(`.mgo[data-stop="${stops.find(x=>x.type==='chapter'&&x.ci===s.ci).i}"]`);
+    const tg=head.nextElementSibling;if(tg.getAttribute('aria-expanded')!=='true')tg.click();}
+}
+const menu=$('#menu');
+function openMenu(){stopTour();markMenu();menu.hidden=false;requestAnimationFrame(()=>menu.classList.add('open'));menu.querySelector('.x').focus();}
+function closeMenu(){if(menu.hidden)return;menu.classList.remove('open');setTimeout(()=>{menu.hidden=true;},380);}
+$('#menuBtn').onclick=openMenu;menu.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeMenu);
+
+// 상세 시트
+const sheet=$('#sheet');
+function openSheet(s){
+  if(s.type!=='place')return;stopTour();const p=s.p,ch=s.ch,img={main:p.photo||PH,detail:p.detail||PH};
+  $('#sEyebrow').innerHTML=`<b>${ch.no}</b><i></i><span>${esc(ch.title)}</span>`;
+  const places=stops.filter(x=>x.type==='place'),k=places.indexOf(s);
+  $('#sBody').innerHTML=`
+   <div class="s-title"><h2 id="sTitle">${esc(p.name)}</h2><p>${esc(p.area)}</p></div>
+   <section class="block"><p class="lab">1950 – 1953</p><p>${glue(p.then)}</p></section>
+   <section class="block"><p class="lab">TODAY · 오늘의 장소</p><p>${glue(p.now)}</p></section>
+   <dl class="info">
+     <dt>위치</dt><dd>${esc(p.area)}</dd>
+     ${p.q?'':'<dt>지도</dt><dd>장소 확정 후 연결</dd>'}<dt${p.q?'':' hidden'}>지도</dt><dd${p.q?'':' hidden'}><a href="https://map.kakao.com/?q=${encodeURIComponent(p.q)}" target="_blank" rel="noopener">카카오맵 ↗</a> · <a href="https://map.naver.com/p/search/${encodeURIComponent(p.q)}" target="_blank" rel="noopener">네이버 지도 ↗</a></dd>
+     <dt>촬영일</dt><dd>${p.photo?(p.shot||'2026.10.04'):'촬영 예정'}</dd>
+   </dl>`;
+  $("#sPhoto").innerHTML=`<div class="fr"><div><img src="${esc(img.main)}" alt=""></div></div>`;
+  sheet.querySelector('.sheet-panel').scrollTop=0;
+  if(sheet.hidden){sheet.hidden=false;requestAnimationFrame(()=>sheet.classList.add('open'));}
+  sheet.querySelector('.x').focus();
+}
+function closeSheet(){if(sheet.hidden)return;sheet.classList.remove('open');setTimeout(()=>{sheet.hidden=true;canvas.focus();},420);}
+sheet.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheet);
+
+/* ── 자동 관람 (왼쪽 위 재생 버튼) ── */
+function stopTour(){}   // (자동 관람 기능은 배경음악 버튼으로 바뀜)
+/* 배경음악: 음원 파일이 준비되면 BGM_SRC에 경로를 넣으세요 (예: 'assets/bgm.mp3') */
+const BGM_SRC='';
+const bgm=new Audio();bgm.loop=true;bgm.volume=.5;bgm.preload='none';if(BGM_SRC)bgm.src=BGM_SRC;
+const bgmBtn=$('#bgmBtn');let bgmOn=false;
+function setBgm(on){bgmOn=on;bgmBtn.setAttribute('aria-pressed',on?'true':'false');bgmBtn.setAttribute('aria-label',on?'배경음악 끄기':'배경음악 켜기');
+  if(BGM_SRC){if(on)bgm.play().catch(()=>{});else bgm.pause();}}
+bgmBtn.onclick=()=>setBgm(!bgmOn);
+/* 자동 재생: 브라우저가 소리 자동 재생을 막으면, 관람객이 화면을 처음 클릭·터치하거나 키를 누를 때 바로 재생 */
+function unlockBgm(){if(bgmOn&&BGM_SRC&&bgm.paused)bgm.play().catch(()=>{});['pointerdown','touchend','keydown'].forEach(t=>removeEventListener(t,unlockBgm,true));}
+['pointerdown','touchend','keydown'].forEach(t=>addEventListener(t,unlockBgm,true));
+function startBgm(){setBgm(true);startCount(500);}
+
+/* ───────────────────────── 입력 ───────────────────────── */
+let drag=null,lastInput=0,wheelAcc=0,wheelLock=0;
+const ray=new T.Raycaster(),ndc=new T.Vector2();
+function pick(cx,cy){
+  const r=canvas.getBoundingClientRect();ndc.set((cx-r.left)/r.width*2-1,-(cy-r.top)/r.height*2+1);
+  ray.setFromCamera(ndc,camera);const h=ray.intersectObjects(clickables,false).find(o=>o.object.visible);lastHit=h||null;return h?h.object:null;
+}
+let lastHit=null;
+const onCTA=h=>!!(h&&h.object.userData.main&&h.uv&&h.uv.x>(LOW_X-12)/MAIN_W&&h.uv.x<(LOW_X+ctaW()+WALL.main.arrow.gap+WALL.main.arrow.length+12)/MAIN_W&&h.uv.y>1-(CTA_Y+24)/MAIN_H&&h.uv.y<1-(CTA_Y-50)/MAIN_H);   // 메인 벽의 '기억을 따라가기' 영역
+canvas.addEventListener('pointerdown',e=>{stopTour();drag={x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,yaw:yawT,pitch:pitchT,type:e.pointerType};canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{
+  if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    if(drag.type!=='touch'){yawT=T.MathUtils.clamp(drag.yaw+dx*0.0035,-0.75,0.75);pitchT=T.MathUtils.clamp(drag.pitch+(drag.type==='touch'?0:dy*0.0025),-0.3,0.3);}
+    lastInput=performance.now();}
+  else if(e.pointerType==='mouse'){{const ho=pick(e.clientX,e.clientY);canvas.classList.toggle('hover',!!ho&&!ho.userData.main);}const h=cur===0&&onCTA(lastHit);if(h&&!main.hover)main.d=0;main.hover=h;}
+});
+canvas.addEventListener('pointerup',e=>{
+  if(!drag)return;const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy,d=drag;drag=null;lastInput=performance.now();
+  if(Math.hypot(dx,dy)<7){const o=pick(e.clientX,e.clientY);if(o&&!o.userData.main){const i=o.userData.stop;   /* 메인 벽('기억을 따라가기')은 누름 비활성 — 호버 애니메이션만 유지 */
+      if(i===cur||o.userData.card||(!isWide()&&stops[i].type==='place')){if(stops[i].type==='place'){if(i!==cur)goTo(i);openSheet(stops[i]);}else step(1);}else goTo(i);}}
+  else if(d.type==='touch'&&Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.2){step(dx<0?1:-1);}   // 모바일: 왼쪽으로 밀면 다음, 오른쪽으로 밀면 이전
+  else if(d.type==='touch'&&Math.abs(dy)>50&&Math.abs(dy)>Math.abs(dx)*1.2){step(dy<0?1:-1);}   // 위아래로 밀어도 이동
+});
+canvas.addEventListener('pointercancel',()=>{drag=null;});
+canvas.addEventListener('pointerleave',()=>{main.hover=false;});
+// 스크롤: 아래로 → 다음, 위로 → 이전. 한 번의 스크롤 동작(관성 포함)에 한 칸만 이동
+let lastWheel=0;
+addEventListener('wheel',e=>{
+  if(!sheet.hidden||!menu.hidden)return;e.preventDefault();stopTour();
+  const now=performance.now(),gap=now-lastWheel;lastWheel=now;
+  if(now<wheelLock)return;                       // 이동 직후 잠깐만 잠그고, 계속 굴려도 잠금이 늘어나지 않음
+  if(gap>300)wheelAcc=0;
+  const dy=e.deltaMode===1?e.deltaY*32:e.deltaMode===2?e.deltaY*innerHeight:e.deltaY;
+  if(Math.abs(dy)<4)return;                      // 터치패드 관성 끝자락의 아주 작은 움직임은 무시
+  if(wheelAcc&&Math.sign(dy)!==Math.sign(wheelAcc))wheelAcc=0;
+  wheelAcc+=dy;if(Math.abs(wheelAcc)>=40){step(wheelAcc>0?1:-1);wheelAcc=0;wheelLock=now+(reduced?250:800);}
+},{passive:false});
+addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(!sheet.hidden)closeSheet();else closeMenu();return;}
+  if(!sheet.hidden||!menu.hidden)return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();stopTour();step(1);}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();stopTour();step(-1);}
+  else if(e.key==='Home')goTo(0);
+  else if(e.key==='Enter'&&document.activeElement===canvas){const s=stops[cur];s.type==='place'?openSheet(s):s.type==='main'&&goTo(1);}
+});
+function resize(){applyLayout();renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;FOV=fovFor();camera.fov=FOV;camera.updateProjectionMatrix();fitTags();
+  const to=camFor(stops[cur]);if(tw){tw.to=to;}else{state.pos.copy(to.pos);state.q.copy(to.q);state.dx=to.dx;state.dy=to.dy;}}
+addEventListener('resize',resize);
+
+/* ───────────────────────── 렌더 루프 ───────────────────────── */
+const qTmp=new T.Quaternion(),fadeEl=$('#fade');
+const sm2=(a,b,v)=>{const t=Math.min(1,Math.max(0,(v-a)/(b-a)));return t*t*(3-2*t);};
+const count={t0:null,last:-1};
+function startCount(delay){main.ta=1;main.tt=null;count.t0=null;drawMain(1023);clearTimeout(main.ctaT);if(!reduced)main.ctaT=setTimeout(()=>{main.d=0;},delay||0);return;   /* 메인에 들어오면 '기억을 따라가기' 애니메이션을 자동 재생 */   /* 카운팅 애니메이션 없이 처음부터 1023과 글자를 모두 보여줌 */main.ta=0;main.tt=null;count.t0=performance.now()+(delay||0);count.last=-1;drawMain(0);}
+// 메인·인트로: 옆 패널이 보이는 쪽(메인은 오른쪽, 인트로는 왼쪽)만 흐리게
+const sbL=$('#sideBlurL'),sbR=$('#sideBlurR'),sbV=new T.Vector3();
+function introDim(){   // 메인을 볼 때 인트로 벽만 살짝 흐리게 (부드럽게 전환)
+  if(!introPanel||!introBlur)return;const t=stops[cur].type==='main'?1:0;introK+=(t-introK)*0.08;if(Math.abs(t-introK)<0.002)introK=t;
+  const D=WALL.intro.dimAtMain;introPanel.material.opacity=1-introK;introBlur.material.opacity=introK*D.opacity;
+  if(!mainBlur)return;const u=stops[cur].type==='intro'?1:0;mainK+=(u-mainK)*0.08;if(Math.abs(u-mainK)<0.002)mainK=u;   // 인트로를 볼 때는 메인 벽만 살짝 흐리게
+  mainPanel.material.opacity=1-mainK;mainBlur.material.opacity=mainK*D.opacity;}
+function sideBlur(){
+  const s=stops[cur],on=(s.type==='main'||s.type==='intro')&&!tw;
+  sbL.classList.remove('on');sbR.classList.remove('on');   /* 화면 블러 대신 옆 벽만 흐리게 (introDim: 메인에서는 인트로, 인트로에서는 메인) */if(!on)return;   // 메인: 인트로가 보이는 오른쪽만 / 인트로: 메인이 보이는 왼쪽만
+  if(!mainPanel||!introPanel)return;
+  const ext=p=>{p.updateMatrixWorld();const w=p.geometry.parameters.width/2,h=p.geometry.parameters.height/2;let x0=1e9,x1=-1e9;
+    [[-w,-h],[w,-h],[-w,h],[w,h]].forEach(([a,b])=>{sbV.set(a,b,0).applyMatrix4(p.matrixWorld).project(camera);const X=(sbV.x+1)/2*innerWidth;x0=Math.min(x0,X);x1=Math.max(x1,X);});return [x0,x1];};
+  const M=ext(mainPanel),I=ext(introPanel),gap=I[0]-M[1],k=0.6;   // 두 패널 사이 틈의 60% 지점부터 옆 패널 쪽으로 흐림
+  if(s.type==='main')sbR.style.left=Math.min(innerWidth,M[1]+Math.max(30,gap*k))+'px';
+  else sbL.style.width=Math.max(0,I[0]-Math.max(30,gap*k))+'px';
+}
+function frame(now){try{frameInner(now);}catch(err){console.error(err);tw=null;}requestAnimationFrame(frame);}
+function frameInner(now){
+  if(main.d<1){main.d=reduced?1:Math.min(1,main.d+(now-(main.last||now))/750);redrawMain();}
+  main.last=now;
+  if(count.t0!==null&&now>=count.t0){const k=Math.min(1,Math.max(0,(now-count.t0)/2300)),v=Math.round(1023*(1-Math.pow(1-k,3)));
+    if(v!==count.last){drawMain(v);count.last=v;}if(k>=1){count.t0=null;main.tt=now+150;}}
+  if(main.tt&&now>=main.tt&&main.ta<1){main.ta=Math.min(1,(now-main.tt)/900);redrawMain();if(main.ta>=1)main.tt=null;}
+  if(tw){const k=Math.min(1,Math.max(0,(now-tw.t0)/tw.dur)),e=ease(k);   // 화면 갱신 시각이 이동 시작보다 앞설 수 있어 0 아래로 내려가지 않게 고정
+    if(tw.path){ // 구간마다 일직선으로 이동 (각 구간 안에서 부드럽게 출발·정지)
+      const P=tw.path,kk=k,last=P.pts.length-2;let j=0;while(j<last&&kk>P.at[j+1])j++;
+      const u=ease(Math.min(1,Math.max(0,(kk-P.at[j])/(P.at[j+1]-P.at[j]))));
+      state.pos.lerpVectors(P.pts[j],P.pts[j+1],u);qTmp.copy(P.qs[j]).slerp(P.qs[j+1],u);state.q.copy(qTmp);
+      // 입구를 지날 때 어두워졌다가 다시 밝아짐 (입구에서의 거리로 계산 → 들어갈 때·나올 때 모두 같음)
+      const z=state.pos.z,outside=1-sm2(0.4,2.9,z-ENT.zOut);let o;
+      // 들어갈 때: 입구 앞에서 밝게 사라지고 → 첫 사진 정면에 선 뒤에야 화면이 다시 나타남
+      if(!P.out)o=j===0?(P.fromEnd?1:0):j===1?(P.fromEnd||z<=ENT.zOut?1:outside):j===2?1:1-sm2(0,1,u);
+      // 나올 때: 제자리에서 밝게 사라지고 → 입구를 나서며 다시 나타남
+      else o=P.toEnd?(j===0?sm2(0,1,u):1):j===0?sm2(0,1,u):j===1?1:j===2?(z<ENT.zOut?1:outside):0;
+      fadeEl.style.opacity=o.toFixed(3);
+    }else{state.pos.lerpVectors(tw.from.pos,tw.to.pos,e);qTmp.copy(tw.from.q).slerp(tw.to.q,e);state.q.copy(qTmp);fadeEl.style.opacity=tw.fromEnd?(1-sm2(0,0.45,k)).toFixed(3):'0';}
+    state.dx=tw.from.dx+(tw.to.dx-tw.from.dx)*e;state.dy=tw.from.dy+(tw.to.dy-tw.from.dy)*e;
+    if(k>=1){tw=null;fadeEl.style.opacity=stops[cur].type==='ending'?'1':'0';}}
+  if(!drag&&now-lastInput>1600){yawT*=0.97;pitchT*=0.97;}
+  yaw+=(yawT-yaw)*0.12;pitch+=(pitchT-pitch)*0.12;
+  camera.position.copy(state.pos);
+  if(!reduced)camera.position.y+=Math.sin(now/2600)*0.012;
+  camera.quaternion.copy(state.q);camera.rotateY(yaw);camera.rotateX(pitch);
+  applyOffset(state.dx,state.dy);
+  renderer.render(scene,camera);
+  sideBlur();introDim();
+  
+}
+
+/* ───────────────────────── 시작 ───────────────────────── */
+applyLayout();
+renderer.setSize(innerWidth,innerHeight,false);
+// 입구 너머: 전시실 안을 한 번 찍어 흐리게(블러) 만들고 검은색 50%를 덮어 입구 면에 붙임 (ENT_VEIL이 true일 때만)
+if(ENT_VEIL)try{
+  const W=384,H=Math.round(384*BLOCK_H/(ENT.x1-ENT.x0)),rt=new T.WebGLRenderTarget(W,H);rt.texture.encoding=T.sRGBEncoding;
+  const snap=new T.PerspectiveCamera(84,W/H,0.05,120);snap.position.set(ENT.cx,BLOCK_H/2,9.6);snap.lookAt(ENT.cx,BLOCK_H/2,-8);
+  doorVeil.visible=false;renderer.setRenderTarget(rt);renderer.render(scene,snap);
+  const buf=new Uint8Array(W*H*4);renderer.readRenderTargetPixels(rt,0,0,W,H,buf);renderer.setRenderTarget(null);doorVeil.visible=true;rt.dispose();
+  const a=cv(W,H),ax=a.getContext('2d'),img=ax.createImageData(W,H);
+  for(let y=0;y<H;y++)img.data.set(buf.subarray((H-1-y)*W*4,(H-y)*W*4),y*W*4);   // 위아래 뒤집기
+  ax.putImageData(img,0,0);
+  const b=cv(W,H),bx=b.getContext('2d'),t1=cv(48,Math.round(48*H/W)),t2=cv(96,Math.round(96*H/W));       // 축소→확대를 두 번 거쳐 부드러운 블러
+  t2.getContext('2d').drawImage(a,0,0,t2.width,t2.height);t1.getContext('2d').drawImage(t2,0,0,t1.width,t1.height);t2.getContext('2d').drawImage(t1,0,0,t2.width,t2.height);
+  bx.imageSmoothingQuality='high';bx.drawImage(t2,0,0,W,H);
+  bx.fillStyle='rgba(0,0,0,0.5)';bx.fillRect(0,0,W,H);
+  doorVeil.material.map=tex(b);doorVeil.material.color.set('#ffffff');doorVeil.material.needsUpdate=true;
+}catch(e){console.error(e);}
+fitTags();goTo(0,true);
+const first=camFor(stops[0]);state.pos.copy(first.pos).add(V(-1.4,0.3,0.4));state.q.copy(first.q);state.dx=first.dx;state.dy=first.dy;
+requestAnimationFrame(frame);
+setTimeout(()=>{loader.classList.add('off');setTimeout(()=>loader.remove(),1300);goTo(0);setTimeout(startBgm,700);},Math.max(450,5000-(performance.now()-(window.__loaderT0||0))));   // 로딩 화면은 페이지를 연 뒤 최소 5초 동안 보여줌
+})();
+</script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
