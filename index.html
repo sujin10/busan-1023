@@ -107,7 +107,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;paddin
 #mnav button:not(:disabled):active{opacity:.5}
 #pCount{font:500 14px/1 var(--sans);letter-spacing:.06em;color:rgba(26,26,26,.6);text-align:center;min-width:6em}
 #pCount b{color:inherit;font-weight:inherit}   /* 번호도 나머지와 같은 회색·굵기 */
-@media (max-width:759px){#mnav{display:flex;align-items: center;}#hero{display:none}#menu .menu-panel{width:100%;padding-top:calc(env(safe-area-inset-top,0px) + 4px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}#menu{height:100dvh;bottom:auto}   /* 아래 여백: Ending이 휴대폰 아래 내비게이션에 가리지 않게 */.mlist{margin-top:0}}   /* 모바일 메뉴: 위쪽 여백 줄임 */
+@media (max-width:759px){#mnav{display:flex;align-items: center;}#hero{display:none}#menu .menu-panel{width:100%;padding-top:calc(env(safe-area-inset-top,0px) + 17px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}#menu{height:100dvh;bottom:auto}   /* 아래 여백: Ending이 휴대폰 아래 내비게이션에 가리지 않게 */.mlist{margin-top:0}}   /* 모바일 메뉴: 위쪽 여백 줄임 */
 /* 모바일 위쪽 바: 배경 없이, 로고·아이콘은 진한 색(데스크톱과 같음) */
 @media (min-width:760px){.top{padding:24px 26px 0 34px}}
 
@@ -122,24 +122,24 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;paddin
 #menu.open .scrim,#sheet.open .scrim{opacity:1}
 .menu-panel{font-family:var(--sans);position:relative;box-sizing:border-box;width:min(380px,100%);height:100%;   /* border-box: 위아래 여백을 포함해 화면 높이에 맞춤 (안 그러면 맨 아래가 화면 밖으로 잘림) */
   background:var(--menu);color:var(--wall);overflow-y:auto;overscroll-behavior:contain;
-  padding:calc(env(safe-area-inset-top,0px) + 14px) 34px calc(env(safe-area-inset-bottom,0px) + 34px);
+  padding:calc(env(safe-area-inset-top,0px) + 17px) 34px calc(env(safe-area-inset-bottom,0px) + 34px);
   transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
 #menu.open .menu-panel{transform:none}
-.menu-head{display:flex;justify-content:flex-end;margin-right:-14px}
+.menu-head{display:flex;justify-content:flex-end;margin-right:-20px}   /* X 아이콘: 위·오른쪽 여백 24px로 같게 (패널 위 여백 14 + 버튼 안 10 / 패널 오른쪽 34 - 20 + 10) */
 .menu-panel .x{width:48px;height:48px}
 .menu-panel .x svg{width:28px;height:28px}
 .mlist{list-style:none;margin:28px 0 0;padding:0}
 .mlist>li{border-bottom:1px solid rgba(253,253,253,.32)}
 .mlist>li:last-child{border-bottom:0}
 .mrow{display:flex;align-items:center;gap: 8px;}
-.mgo{flex:1;text-align:left;display:flex;align-items:center;gap: 12px;padding: 12px 0;font-family:var(--sans);font-weight:700;font-size:18px;min-width:0}
+.mgo{flex:1;text-align:left;display:flex;align-items:center;gap: 12px;padding: 12px 0 12px 10px;font-family:var(--sans);font-weight:700;font-size:18px;min-width:0}   /* 왼쪽 10px: 글자가 구분선 안쪽으로 들어오게 */
 .mgo .no{font-family:var(--num);font-weight:600;font-variant-numeric:tabular-nums;width:24px;flex:none}
 .mgo .sep{width:2px;height:16px;background:currentColor;flex:none}
-.mtog{width:40px;height:44px;display:grid;place-items:center;margin-right:-10px;flex:none}
+.mtog{width:40px;height:44px;display:grid;place-items:center;margin-right:-2px;flex:none}   /* 화살표도 오른쪽 끝에서 살짝 안쪽으로 */
 .mtog svg{width:16px;height:16px;transition:transform .3s}
 .mtog[aria-expanded="false"] svg{transform:rotate(-90deg)}
 .mtog.arrow svg{transform:rotate(-90deg)}
-.msub{list-style:none;margin: -4px 0 0;padding: 0px 0 14px 50px;}
+.msub{list-style:none;margin: -4px 0 0;padding: 0px 0 14px 60px;}
 .msub[hidden]{display:none}
 .msub button{display:block;text-align:left;font-size:14px;line-height:1.5;padding:4px 0;color:rgba(253,253,253,.72)}
 .msub button:hover,.mgo:hover{color:var(--wall)}
