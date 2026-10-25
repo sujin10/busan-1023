@@ -742,7 +742,7 @@ function shadowCanvas(){const c=cv(128,128),x=c.getContext('2d');x.shadowColor='
 const canvas=$('#gl');
 let renderer;
 try{renderer=new T.WebGLRenderer({canvas,antialias:true});}catch(e){lMsg.textContent='이 기기에서는 3D 화면(WebGL)을 표시할 수 없습니다.';return;}
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<760?3:2));   // 휴대폰은 화면 해상도(최대 3배) 그대로 그려 글자가 흐리지 않게
 renderer.outputEncoding=T.sRGBEncoding;
 const scene=new T.Scene();
 scene.background=new T.Color('#BDBDBD');
@@ -1114,10 +1114,12 @@ function openSheet(s){
    </dl>`;
   $("#sPhoto").innerHTML=`<div class="fr"><div><img src="${esc(img.main)}" alt=""></div></div>`;
   sheet.querySelector('.sheet-panel').scrollTop=0;
-  if(sheet.hidden){sheet.hidden=false;requestAnimationFrame(()=>sheet.classList.add('open'));}
+  clearTimeout(sheetT);sheetOpenAt=performance.now();   // 여는 순간의 탭이 곧바로 '닫기'로 들어가지 않게
+  if(sheet.hidden){sheet.hidden=false;requestAnimationFrame(()=>sheet.classList.add('open'));}else sheet.classList.add('open');
   sheet.querySelector('.x').focus();
 }
-function closeSheet(){if(sheet.hidden)return;sheet.classList.remove('open');setTimeout(()=>{sheet.hidden=true;canvas.focus();},420);}
+let sheetT=0,sheetOpenAt=0;
+function closeSheet(){if(sheet.hidden||performance.now()-sheetOpenAt<450)return;sheet.classList.remove('open');clearTimeout(sheetT);sheetT=setTimeout(()=>{sheet.hidden=true;canvas.focus();},420);}
 sheet.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheet);
 
 /* ── 자동 관람 (왼쪽 위 재생 버튼) ── */
