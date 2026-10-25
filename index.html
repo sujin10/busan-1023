@@ -107,7 +107,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;paddin
 #mnav button:not(:disabled):active{opacity:.5}
 #pCount{font:500 14px/1 var(--sans);letter-spacing:.06em;color:rgba(26,26,26,.6);text-align:center;min-width:6em}
 #pCount b{color:inherit;font-weight:inherit}   /* 번호도 나머지와 같은 회색·굵기 */
-@media (max-width:759px){#mnav{display:flex;align-items: center;}#hero{display:none}.menu-panel{width:100%;padding-top:calc(env(safe-area-inset-top,0px) + 4px)}.mlist{margin-top:0}}   /* 모바일 메뉴: 위쪽 여백 줄임 */
+@media (max-width:759px){#mnav{display:flex;align-items: center;}#hero{display:none}#menu .menu-panel{width:100%;padding-top:calc(env(safe-area-inset-top,0px) + 4px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}#menu{height:100dvh;bottom:auto}   /* 아래 여백: Ending이 휴대폰 아래 내비게이션에 가리지 않게 */.mlist{margin-top:0}}   /* 모바일 메뉴: 위쪽 여백 줄임 */
 /* 모바일 위쪽 바: 배경 없이, 로고·아이콘은 진한 색(데스크톱과 같음) */
 @media (min-width:760px){.top{padding:24px 26px 0 34px}}
 
@@ -120,7 +120,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;paddin
 #menu{z-index:40}#sheet{z-index:45;align-items:flex-end}
 .scrim{position:absolute;inset:0;background:rgba(26,26,26,.4);opacity:0;transition:opacity .35s}
 #menu.open .scrim,#sheet.open .scrim{opacity:1}
-.menu-panel{font-family:var(--sans);position:relative;width:min(380px,100%);height:100%;background:var(--menu);color:var(--wall);overflow-y:auto;overscroll-behavior:contain;
+.menu-panel{font-family:var(--sans);position:relative;box-sizing:border-box;width:min(380px,100%);height:100%;   /* border-box: 위아래 여백을 포함해 화면 높이에 맞춤 (안 그러면 맨 아래가 화면 밖으로 잘림) */
+  background:var(--menu);color:var(--wall);overflow-y:auto;overscroll-behavior:contain;
   padding:calc(env(safe-area-inset-top,0px) + 14px) 34px calc(env(safe-area-inset-bottom,0px) + 34px);
   transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
 #menu.open .menu-panel{transform:none}
