@@ -1120,15 +1120,16 @@ sheet.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheet);
 
 /* ── 자동 관람 (왼쪽 위 재생 버튼) ── */
 function stopTour(){}   // (자동 관람 기능은 배경음악 버튼으로 바뀜)
-/* 배경음악: 음원 파일이 준비되면 BGM_SRC에 경로를 넣으세요 (예: 'assets/bgm.mp3') */
-const BGM_SRC='';
+/* 배경음악: assets/bgm.mp3 (Quiet Museum Hall) — 바꾸려면 같은 이름으로 덮어쓰기 · 소리 크기는 아래 bgm.volume(0~1) */
+const BGM_SRC='assets/bgm.mp3';
 const bgm=new Audio();bgm.loop=true;bgm.volume=.5;bgm.preload='none';if(BGM_SRC)bgm.src=BGM_SRC;
 const bgmBtn=$('#bgmBtn');let bgmOn=false;
 function setBgm(on){bgmOn=on;bgmBtn.setAttribute('aria-pressed',on?'true':'false');bgmBtn.setAttribute('aria-label',on?'배경음악 끄기':'배경음악 켜기');
   if(BGM_SRC){if(on)bgm.play().catch(()=>{});else bgm.pause();}}
 bgmBtn.onclick=()=>setBgm(!bgmOn);
 /* 자동 재생: 브라우저가 소리 자동 재생을 막으면, 관람객이 화면을 처음 클릭·터치하거나 키를 누를 때 바로 재생 */
-function unlockBgm(){if(bgmOn&&BGM_SRC&&bgm.paused)bgm.play().catch(()=>{});['pointerdown','touchend','keydown'].forEach(t=>removeEventListener(t,unlockBgm,true));}
+function unlockBgm(){if(!bgmOn||!BGM_SRC)return;   // 로딩 중(아직 켜기 전)의 클릭은 건너뛰고, 켜진 뒤 첫 클릭·터치에 재생
+  bgm.play().then(()=>['pointerdown','touchend','keydown'].forEach(t=>removeEventListener(t,unlockBgm,true))).catch(()=>{});}
 ['pointerdown','touchend','keydown'].forEach(t=>addEventListener(t,unlockBgm,true));
 function startBgm(){setBgm(true);startCount(500);}
 
